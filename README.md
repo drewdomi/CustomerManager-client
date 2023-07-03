@@ -17,4 +17,10 @@ Welcome to our GitHub repository for the **Customer Manager**! This application 
 - **API for Document Number Verification**: An external API is integrated into the application to validate the authenticity and correctness of document numbers.
 - **SQL Server**: A robust and reliable relational database management system used for efficient data storage and retrieval.
 
+## Todos
+
+- [x] Add Router
+- [ ] Make customer register page
+- [ ] Make customer search page
+
 We believe that this Customer Management App will greatly simplify and streamline customer-related operations for your organization. Please feel free to explore the repository, contribute, and provide feedback to help us improve the application further.
