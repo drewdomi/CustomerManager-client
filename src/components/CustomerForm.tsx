@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, FormControl, FormLabel, TextField, Box } from "@mui/material";
+import { Button, FormControl, TextField, Box } from "@mui/material";
 
 function CustomerForm() {
   const [name, setName] = useState("");
@@ -12,40 +12,53 @@ function CustomerForm() {
   }
 
   return (
-    <Box>
-      <FormControl component="form" autoComplete="off" onSubmit={handleSubmit}>
-        <FormLabel>Nome</FormLabel>
-        <TextField
-          placeholder="Insira o Nome"
-          size='small'
-          onChange={e => setName(e.target.value)}
-        />
-        <FormLabel>CPF</FormLabel>
-        <TextField
-          placeholder="Insira o CPF"
-          size="small"
-          onChange={e => setCpf(e.target.value)}
-          type="number"
-        />
-        <FormLabel>Data de Nascimento</FormLabel>
-        <TextField
-          size="small"
-          onChange={e => setBirthday(e.target.value)}
-          type="date"
-        />
+    <FormControl
+      component="form"
+      autoComplete="off"
+      onSubmit={handleSubmit}
+      sx={{
+        display: "flex",
+        maxWidth: 300,
+        margin: "auto",
+        gap: "10px",
+      }}
+    >
+      <TextField
+        label="Insira o Nome"
+        size='small'
+        onChange={e => setName(e.target.value)}
+      />
+      <TextField
+        label="Insira o CPF"
+        size="small"
+        onChange={e => setCpf(e.target.value)}
+        type="number"
+      />
+      <TextField
+        label="Data de Nascimento"
+        InputLabelProps={{ shrink: true }}
+        size="small"
+        onChange={e => setBirthday(e.target.value)}
+        type="date"
+      />
 
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "end",
+        }}
+      >
         <Button
           variant="contained"
           type="submit"
-        >Enviar
+        >Salvar
         </Button>
         <Button
           type="reset"
         >Limpar
         </Button>
-      </FormControl>
-    </Box>
-
+      </Box>
+    </FormControl>
   );
 }
 
