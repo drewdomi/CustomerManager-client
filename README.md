@@ -20,6 +20,7 @@ Welcome to our GitHub repository for the **Customer Manager**! This application 
 ## Todos
 
 - [x] Add Router
+- [ ] Make layout style
 - [ ] Make customer register page
 - [ ] Make customer search page
 
