@@ -16,10 +16,11 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import { Link } from "@mui/material";
 
-const drawerWidth = 240;
+const drawerWidth = 260;
 
 type PropsTypes = {
   children: JSX.Element;
@@ -73,6 +74,24 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
+interface ListItemLinkProps {
+  icon?: React.ReactElement;
+  primary: string;
+  to: string;
+}
+
+function ListItemLink(props: ListItemLinkProps) {
+  const { icon, primary, to } = props;
+
+  return (
+    <ListItemButton href={to}>
+      <ListItemIcon>{icon}</ListItemIcon>
+      <ListItemText primary={primary} />
+    </ListItemButton>
+  );
+}
+
+
 export default function SideBar({ children }: PropsTypes) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -92,7 +111,7 @@ export default function SideBar({ children }: PropsTypes) {
         <Toolbar>
           <IconButton
             color="inherit"
-            aria-label="open drawer"
+            aria-label="Abrir Menu"
             onClick={handleDrawerOpen}
             edge="start"
             sx={{ mr: 2, ...(open && { display: 'none' }) }}
@@ -100,7 +119,7 @@ export default function SideBar({ children }: PropsTypes) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Persistent drawer
+            Customer Manager
           </Typography>
         </Toolbar>
       </AppBar>
@@ -124,29 +143,15 @@ export default function SideBar({ children }: PropsTypes) {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+
+          <ListItem disablePadding>
+            <ListItemLink to="/" primary="Cadastrar Cliente" icon={<PersonAddAlt1Icon />} />
+          </ListItem>
+
+          <ListItem disablePadding >
+            <ListItemLink to="/search" primary="Pesquisar Cliente" icon={<PersonSearchIcon />} />
+          </ListItem>
+
         </List>
       </Drawer>
       <Main open={open}>
