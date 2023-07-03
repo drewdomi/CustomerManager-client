@@ -5,10 +5,11 @@ function CustomerForm() {
   const [name, setName] = useState("");
   const [cpf, setCpf] = useState("");
   const [birthday, setBirthday] = useState("");
+  const [email, setEmail] = useState("")
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    console.log(name, cpf, birthday);
+    console.log(name, cpf, birthday, email);
   }
 
   return (
@@ -27,12 +28,21 @@ function CustomerForm() {
         label="Insira o Nome"
         size='small'
         onChange={e => setName(e.target.value)}
+        required
+      />
+      <TextField
+        label="Insira o Email"
+        size='small'
+        onChange={e => setEmail(e.target.value)}
+        type="email"
+        required
       />
       <TextField
         label="Insira o CPF"
         size="small"
         onChange={e => setCpf(e.target.value)}
         type="number"
+        required
       />
       <TextField
         label="Data de Nascimento"
@@ -40,6 +50,7 @@ function CustomerForm() {
         size="small"
         onChange={e => setBirthday(e.target.value)}
         type="date"
+        required
       />
 
       <Box
