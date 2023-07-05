@@ -5,7 +5,7 @@ function CustomerForm() {
   const [name, setName] = useState("");
   const [cpf, setCpf] = useState("");
   const [birthday, setBirthday] = useState("");
-  const [email, setEmail] = useState("")
+  const [email, setEmail] = useState("");
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -41,7 +41,8 @@ function CustomerForm() {
         label="Insira o CPF"
         size="small"
         onChange={e => setCpf(e.target.value)}
-        type="number"
+        type="text"
+        inputProps={{ maxlength: 11, }}
         required
       />
       <TextField
@@ -51,12 +52,14 @@ function CustomerForm() {
         onChange={e => setBirthday(e.target.value)}
         type="date"
         required
+        value="2023-12-23"
       />
 
       <Box
         sx={{
           display: "flex",
           justifyContent: "end",
+          gap: "10px",
         }}
       >
         <Button
