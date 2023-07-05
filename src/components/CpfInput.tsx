@@ -1,21 +1,19 @@
 import { TextField } from "@mui/material";
-import { ReactNode } from "react";
 import InputMask from "react-input-mask";
 
 type InputCpfProps = {
   value?: string,
   label?: string,
-  onchange?: () => void,
-  children?: ReactNode;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
 };
 
-function CpfInput({value, onchange}: InputCpfProps) {
+function CpfInput({label, value, onChange}: InputCpfProps) {
+
   return (
-    <InputMask mask="999.999.999-99" value={value}>
+    <InputMask mask="999.999.999-99" value={value} onChange={onChange}>
       <TextField
-        label="Insira o CPF"
+        label={label}
         size="small"
-        onChange={onchange}
         type="text"
         required
       />

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, FormControl, TextField, Box } from "@mui/material";
-import CpfInput from './InputCpf';
+import CpfInput from './CpfInput';
 
 function CustomerForm() {
   const [name, setName] = useState("");
@@ -39,6 +39,8 @@ function CustomerForm() {
         required
       />
       <CpfInput
+        label="Insira o CPF"
+        onChange={event => setCpf(event.target.value)}
       />
       <TextField
         label="Data de Nascimento"
@@ -47,7 +49,6 @@ function CustomerForm() {
         onChange={e => setBirthday(e.target.value)}
         type="date"
         required
-        value="2023-12-23"
       />
       <Box
         sx={{
