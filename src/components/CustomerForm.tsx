@@ -56,7 +56,7 @@ function CustomerForm() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        maxWidth: 700,
+        maxWidth: "600px",
         margin: "auto",
         gap: "15px",
       }}
@@ -76,7 +76,7 @@ function CustomerForm() {
           display: "flex",
           gap: "10px",
           boxShadow: "0 1px 4px #000000aa",
-          padding: "20px",
+          padding: "15px",
           borderRadius: 2,
         }}
       >
@@ -93,10 +93,18 @@ function CustomerForm() {
           type="email"
           required
         />
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "10px",
+          }}
+        >
         <CpfInput
           label="CPF"
           onChange={event => handleCpf(event.target.value)}
           error={errorCpf}
+          
         />
         <TextField
           label="Data de Nascimento"
@@ -105,7 +113,11 @@ function CustomerForm() {
           onChange={e => setBirthday(e.target.value)}
           type="date"
           required
+          sx={{
+            flexGrow: 1
+          }}
         />
+        </Box>
         <Box
           sx={{
             display: "flex",

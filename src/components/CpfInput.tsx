@@ -22,6 +22,9 @@ function CpfInput({ label, value, error, onChange }: InputCpfProps) {
         type="text"
         required
         error={error}
+        sx={{
+          flexGrow: 1
+        }}
       />
     </InputMask>
   );
