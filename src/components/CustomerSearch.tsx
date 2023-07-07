@@ -1,6 +1,14 @@
+import { Typography } from "@mui/material";
+
 function CustomerSearch() {
   return (
-    <h1>Customer Search</h1>
+    <Typography
+    variant='h2'
+    fontSize="28px"
+    fontWeight="Bold"
+  >
+    Pesquisar Cliente
+  </Typography>
   );
 }
 
