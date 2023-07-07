@@ -8,14 +8,14 @@ type InputCpfProps = {
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
 };
 
-function CpfInput({label, value, error, onChange}: InputCpfProps) {
+function CpfInput({ label, value, error, onChange }: InputCpfProps) {
   return (
     <InputMask
-        mask="999.999.999-99"
-        maskPlaceholder=""
-        value={value}
-        onChange={onChange}
-      >
+      mask="999.999.999-99"
+      maskPlaceholder=""
+      value={value}
+      onChange={onChange}
+    >
       <TextField
         label={label}
         size="small"

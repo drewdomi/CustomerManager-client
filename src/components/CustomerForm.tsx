@@ -12,7 +12,9 @@ function CustomerForm() {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    console.log(name, cpf, birthday, email);
+    if(!errorCpf){
+      console.log(name, cpf, birthday, email);
+    }
   }
 
   function handleCpf(maskedCpf: string){
