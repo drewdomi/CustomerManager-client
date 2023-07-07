@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, FormControl, TextField, Box } from "@mui/material";
 import CpfInput from './CpfInput';
+import isValidCPF from '../snippets/isValidCpf';
 
 function CustomerForm() {
   const [name, setName] = useState("");
@@ -18,8 +19,11 @@ function CustomerForm() {
     const onlyNumbers = (str: string) => str.replace(/[^0-9]/g, "")
     
     if(maskedCpf.length === 14){
-      setErrorCpf(false)
-      setCpf(onlyNumbers(maskedCpf))
+      console.log(isValidCPF(maskedCpf))
+      if(isValidCPF(maskedCpf)){
+        setErrorCpf(false)
+        setCpf(onlyNumbers(maskedCpf))
+      }
     }
     else setErrorCpf(true)
   }
