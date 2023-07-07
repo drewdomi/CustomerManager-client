@@ -10,14 +10,12 @@ export type AlertProps = {
   alertHandleOpen: () => void,
   alertHandleClose: () => void,
   alertTitle?: string,
-  alertContent?: string,
-}
+};
 
 function Alert({
   alertToggleOpen,
   alertHandleClose,
   alertTitle = "Alert Title",
-  alertContent = "Alert Content"
 }: AlertProps) {
   return (
     <div>
@@ -31,8 +29,7 @@ function Alert({
           {alertTitle}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            {alertContent}
+          <DialogContentText  id="alert-dialog-description">
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -45,4 +42,4 @@ function Alert({
   );
 }
 
-export default Alert
+export default Alert;

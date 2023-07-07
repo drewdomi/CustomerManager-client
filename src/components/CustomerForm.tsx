@@ -13,8 +13,8 @@ function CustomerForm() {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    alertHandleOpen()
     if (!errorCpf) {
+      alertHandleOpen()
       console.log(name, cpf, birthday, email);
     }
   }
@@ -23,7 +23,6 @@ function CustomerForm() {
     const onlyNumbers = (str: string) => str.replace(/[^0-9]/g, "");
 
     if (maskedCpf.length === 14) {
-      console.log(isValidCPF(maskedCpf));
       if (isValidCPF(maskedCpf)) {
         setErrorCpf(false);
         setCpf(onlyNumbers(maskedCpf));
@@ -66,26 +65,26 @@ function CustomerForm() {
         sx={{
           display: "flex",
           gap: "10px",
-          boxShadow: "0 0 4px #000000aa",
-          padding: "20px 15px 25px",
+          boxShadow: "0 1px 4px #000000aa",
+          padding: "20px",
           borderRadius: 2,
         }}
       >
         <TextField
-          label="Insira o Nome"
+          label="Nome"
           size='small'
           onChange={e => setName(e.target.value)}
           required
         />
         <TextField
-          label="Insira o Email"
+          label="E-mail"
           size='small'
           onChange={e => setEmail(e.target.value)}
           type="email"
           required
         />
         <CpfInput
-          label="Insira o CPF"
+          label="CPF"
           onChange={event => handleCpf(event.target.value)}
           error={errorCpf}
         />
@@ -102,6 +101,7 @@ function CustomerForm() {
             display: "flex",
             justifyContent: "end",
             gap: "10px",
+            marginTop: "10px",
           }}
         >
           <Button
@@ -119,6 +119,7 @@ function CustomerForm() {
         alertHandleClose={alertHandleClose}
         alertHandleOpen={alertHandleOpen}
         alertToggleOpen={alertToggleOpen}
+        alertTitle={`Cliente Cadastrado com Sucesso`}
       />
     </Box>
   );
