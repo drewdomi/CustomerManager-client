@@ -3,6 +3,8 @@ import { Button, FormControl, TextField, Box, Typography } from "@mui/material";
 import CpfInput from './CpfInput';
 import isValidCPF from '../snippets/isValidCpf';
 import Alert from './Alert';
+import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 
 function CustomerForm() {
   const [name, setName] = useState("");
@@ -16,6 +18,7 @@ function CustomerForm() {
     if (!errorCpf) {
       alertHandleOpen()
       console.log(name, cpf, birthday, email);
+      cleanAllStates()
     }
   }
 
@@ -40,6 +43,13 @@ function CustomerForm() {
   const alertHandleClose = () => {
     setAlertToggleOpen(false);
   };
+
+  function cleanAllStates() {
+    setName("")
+    setCpf("")
+    setEmail("")
+    setBirthday("") 
+  }
 
   return (
     <Box
@@ -107,10 +117,12 @@ function CustomerForm() {
           <Button
             variant="contained"
             type="submit"
+            startIcon={<DoneRoundedIcon/>}
           >Salvar
           </Button>
           <Button
             type="reset"
+            startIcon={<DeleteOutlineRoundedIcon/>}
           >Limpar
           </Button>
         </Box>
