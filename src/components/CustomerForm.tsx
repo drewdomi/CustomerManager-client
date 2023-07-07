@@ -5,12 +5,23 @@ import CpfInput from './CpfInput';
 function CustomerForm() {
   const [name, setName] = useState("");
   const [cpf, setCpf] = useState("");
+  const [errorCpf, setErrorCpf] = useState(false);
   const [birthday, setBirthday] = useState("");
   const [email, setEmail] = useState("");
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     console.log(name, cpf, birthday, email);
+  }
+
+  function handleCpf(maskedCpf: string){
+    const onlyNumbers = (str: string) => str.replace(/[^0-9]/g, "")
+    
+    if(maskedCpf.length === 14){
+      setErrorCpf(false)
+      setCpf(onlyNumbers(maskedCpf))
+    }
+    else setErrorCpf(true)
   }
 
   return (
@@ -40,7 +51,8 @@ function CustomerForm() {
       />
       <CpfInput
         label="Insira o CPF"
-        onChange={event => setCpf(event.target.value)}
+        onChange={event => handleCpf(event.target.value)}
+        error={errorCpf}
       />
       <TextField
         label="Data de Nascimento"
