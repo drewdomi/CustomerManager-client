@@ -1,4 +1,4 @@
-import { Typography, Box, FormControl, TextField, InputAdornment } from "@mui/material";
+import { Paper, Typography, Box, FormControl, TextField, InputAdornment } from "@mui/material";
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
 function CustomerSearch() {
@@ -19,13 +19,12 @@ function CustomerSearch() {
       >
         Pesquisar Cliente
       </Typography>
-      <Box
+      <Paper
+        elevation={2}
         sx={{
           display: "flex",
           gap: "10px",
-          boxShadow: "0 1px 4px #000000aa",
           padding: "15px",
-          borderRadius: 2,
         }}
       >
         <FormControl
@@ -47,7 +46,7 @@ function CustomerSearch() {
             }}
           />
         </FormControl>
-      </Box>
+      </Paper>
     </Box>
   );
 }
