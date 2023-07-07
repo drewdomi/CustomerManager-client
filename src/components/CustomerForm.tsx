@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, FormControl, TextField, Box, Typography } from "@mui/material";
 import CpfInput from './CpfInput';
 import isValidCPF from '../snippets/isValidCpf';
+import Alert from './Alert';
 
 function CustomerForm() {
   const [name, setName] = useState("");
@@ -12,6 +13,7 @@ function CustomerForm() {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    alertHandleOpen()
     if (!errorCpf) {
       console.log(name, cpf, birthday, email);
     }
@@ -29,6 +31,16 @@ function CustomerForm() {
     }
     else setErrorCpf(true);
   }
+
+    const [alertToggleOpen, setAlertToggleOpen] = useState(false);
+
+  const alertHandleOpen = () => {
+    setAlertToggleOpen(true);
+  };
+
+  const alertHandleClose = () => {
+    setAlertToggleOpen(false);
+  };
 
   return (
     <Box
@@ -103,6 +115,11 @@ function CustomerForm() {
           </Button>
         </Box>
       </FormControl>
+      <Alert
+        alertHandleClose={alertHandleClose}
+        alertHandleOpen={alertHandleOpen}
+        alertToggleOpen={alertToggleOpen}
+      />
     </Box>
   );
 }
