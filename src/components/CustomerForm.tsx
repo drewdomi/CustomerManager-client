@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Paper, Button, FormControl, TextField, Box, Typography } from "@mui/material";
-import CpfInput from './CpfInput';
+import { Paper, Button, FormControl, Box } from "@mui/material";
 import isValidCPF from '../snippets/isValidCpf';
 import Alert from './Alert';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import api from '../services/api';
+import Title from './Title';
+import FormInput from './FormInput';
 
 function CustomerForm() {
   const [name, setName] = useState("");
@@ -18,7 +19,7 @@ function CustomerForm() {
     event.preventDefault();
     if (!errorCpf) {
       alertHandleOpen();
-      api.post("",{name, email, cpf, birthday})
+      api.post("", { name, email, cpf, birthday });
     }
   }
 
@@ -45,22 +46,10 @@ function CustomerForm() {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        maxWidth: "600px",
-        margin: "auto",
-        gap: "15px",
-      }}
-    >
-      <Typography
-        variant='h2'
-        fontSize="28px"
-        fontWeight="Bold"
-      >
+    <>
+      <Title>
         Cadastrar Cliente
-      </Typography>
+      </Title>
       <Paper
         elevation={2}
         sx={{
@@ -76,18 +65,14 @@ function CustomerForm() {
             gap: "10px",
           }}
         >
-          <TextField
+          <FormInput
             label="Nome"
-            size='small'
             onChange={e => setName(e.target.value)}
-            required
           />
-          <TextField
-            label="E-mail"
-            size='small'
-            onChange={e => setEmail(e.target.value)}
+          <FormInput
+            label="E-Mail"
             type="email"
-            required
+            onChange={e => setEmail(e.target.value)}
           />
           <Box
             sx={{
@@ -96,22 +81,16 @@ function CustomerForm() {
               gap: "10px",
             }}
           >
-            <CpfInput
+            <FormInput
               label="CPF"
-              onChange={event => handleCpf(event.target.value)}
+              type="cpf"
+              onChange={e => handleCpf(e.target.value)}
               error={errorCpf}
-
             />
-            <TextField
+            <FormInput
               label="Data de Nascimento"
-              InputLabelProps={{ shrink: true }}
-              size="small"
-              onChange={e => setBirthday(e.target.value)}
               type="date"
-              required
-              sx={{
-                flexGrow: 1
-              }}
+              onChange={e => setBirthday(e.target.value)}
             />
           </Box>
           <Box
@@ -142,7 +121,7 @@ function CustomerForm() {
         alertToggleOpen={alertToggleOpen}
         alertTitle={`Cliente Cadastrado com Sucesso`}
       />
-    </Box>
+    </>
   );
 }
 

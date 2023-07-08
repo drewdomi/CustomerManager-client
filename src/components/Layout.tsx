@@ -1,15 +1,26 @@
-import SideBar from "./Drawer";
+import { Box } from "@mui/material";
+import SideBar from "./SideBar";
 
 type PropsTypes = {
-  children: JSX.Element
+  children: JSX.Element;
+};
+
+function Layout({ children }: PropsTypes) {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        maxWidth: "600px",
+        margin: "auto",
+        gap: "15px",
+        padding: "20px 15px 0"
+      }}
+    >
+      <SideBar />
+      {children}
+    </Box>
+  );
 }
 
-function Layout({children}: PropsTypes){
-  return(
-    <SideBar>
-    {children}
-    </SideBar>
-  )
-}
-
-export default Layout
+export default Layout;

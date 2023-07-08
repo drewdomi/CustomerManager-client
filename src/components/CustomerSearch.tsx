@@ -1,24 +1,13 @@
-import { Paper, Typography, Box, FormControl, TextField, InputAdornment } from "@mui/material";
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import { Paper, FormControl } from "@mui/material";
+import Title from "./Title";
+import FormInput from "./FormInput";
 
 function CustomerSearch() {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        maxWidth: "600px",
-        margin: "auto",
-        gap: "15px",
-      }}
-    >
-      <Typography
-        variant='h2'
-        fontSize="28px"
-        fontWeight="Bold"
-      >
+    <>
+      <Title>
         Pesquisar Cliente
-      </Typography>
+      </Title>
       <Paper
         elevation={2}
         sx={{
@@ -33,21 +22,13 @@ function CustomerSearch() {
             flexGrow: 1,
           }}
         >
-          <TextField
-            placeholder="Nome"
-            size='small'
-            onChange={e => console.log(e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchRoundedIcon />
-                </InputAdornment>
-              ),
-            }}
+          <FormInput
+            label="Nome"
+            type="search"
           />
         </FormControl>
       </Paper>
-    </Box>
+    </>
   );
 }
 
