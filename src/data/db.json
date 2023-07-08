@@ -27,6 +27,13 @@
       "cpf": "44801632041",
       "birthday": "2023-07-11",
       "id": 4
+    },
+    {
+      "name": "Pedro Henrique",
+      "email": "pedro@gmail.com",
+      "cpf": "11477861009",
+      "birthday": "2013-02-08",
+      "id": 5
     }
   ]
 }

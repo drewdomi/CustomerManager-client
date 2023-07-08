@@ -20,6 +20,7 @@ function CustomerForm() {
     if (!errorCpf) {
       alertHandleOpen();
       api.post("", { name, email, cpf, birthday });
+      cleanInputs()
     }
   }
 
@@ -45,6 +46,13 @@ function CustomerForm() {
     setAlertToggleOpen(false);
   };
 
+  function cleanInputs(){
+    setName("")
+    setEmail("")
+    setCpf("")
+    setBirthday("")
+  }
+
   return (
     <>
       <Title>
@@ -68,11 +76,13 @@ function CustomerForm() {
           <FormInput
             label="Nome"
             onChange={e => setName(e.target.value)}
+            value={name}
           />
           <FormInput
             label="E-Mail"
             type="email"
             onChange={e => setEmail(e.target.value)}
+            value={email}
           />
           <Box
             sx={{
@@ -86,11 +96,13 @@ function CustomerForm() {
               type="cpf"
               onChange={e => handleCpf(e.target.value)}
               error={errorCpf}
+              value={cpf}
             />
             <FormInput
               label="Data de Nascimento"
               type="date"
               onChange={e => setBirthday(e.target.value)}
+              value={birthday}
             />
           </Box>
           <Box

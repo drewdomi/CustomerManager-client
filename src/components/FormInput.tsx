@@ -42,6 +42,7 @@ function FormInput({ value, label, type = "text", error, onChange }: FormInputPr
         onChange={onChange}
         type={type}
         required
+        value={value}
         sx={{
           flexGrow: 1
         }}
@@ -55,6 +56,7 @@ function FormInput({ value, label, type = "text", error, onChange }: FormInputPr
         placeholder={label}
         size='small'
         onChange={onChange}
+        value={value}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -72,6 +74,7 @@ function FormInput({ value, label, type = "text", error, onChange }: FormInputPr
       onChange={onChange}
       type={type}
       error={error}
+      value={value}
       required
       sx={{
         flexGrow: 1
