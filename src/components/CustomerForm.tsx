@@ -5,6 +5,7 @@ import isValidCPF from '../snippets/isValidCpf';
 import Alert from './Alert';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import api from '../services/api';
 
 function CustomerForm() {
   const [name, setName] = useState("");
@@ -17,8 +18,7 @@ function CustomerForm() {
     event.preventDefault();
     if (!errorCpf) {
       alertHandleOpen();
-      console.log(name, cpf, birthday, email);
-      cleanAllStates();
+      api.post("",{name, email, cpf, birthday})
     }
   }
 
@@ -43,13 +43,6 @@ function CustomerForm() {
   const alertHandleClose = () => {
     setAlertToggleOpen(false);
   };
-
-  function cleanAllStates() {
-    setName("");
-    setCpf("");
-    setEmail("");
-    setBirthday("");
-  }
 
   return (
     <Box

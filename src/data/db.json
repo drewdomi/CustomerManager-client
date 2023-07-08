@@ -1,0 +1,32 @@
+{
+  "customers": [
+    {
+      "id": 1,
+      "name": "Andrew",
+      "email": "drewdomi@proton.me",
+      "cpf": "59869331092",
+      "birthday": "2023-07-06"
+    },
+    {
+      "id": 2,
+      "name": "João",
+      "email": "joao@gmail.com",
+      "cpf": "59869331092",
+      "birthday": "2000-04-06"
+    },
+    {
+      "name": "Lucas",
+      "email": "lucas@gmail.co",
+      "cpf": "59869331092",
+      "birthday": "2023-07-19",
+      "id": 3
+    },
+    {
+      "name": "Gledson Nunes",
+      "email": "gledson@gmail.com",
+      "cpf": "44801632041",
+      "birthday": "2023-07-11",
+      "id": 4
+    }
+  ]
+}
