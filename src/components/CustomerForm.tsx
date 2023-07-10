@@ -26,6 +26,7 @@ function CustomerForm() {
 
   function handleCpf(maskedCpf: string) {
     const onlyNumbers = (str: string) => str.replace(/[^0-9]/g, "");
+    setCpf(onlyNumbers(maskedCpf));
 
     if (maskedCpf.length === 14) {
       if (isValidCPF(maskedCpf)) {
