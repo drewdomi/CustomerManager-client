@@ -1,4 +1,4 @@
-import { Paper, FormControl, Box, Button } from "@mui/material";
+import { Paper, FormControl, Box, Button, Typography } from "@mui/material";
 import Title from "./Title";
 import FormInput from "./FormInput";
 import { useState } from "react";
@@ -11,6 +11,7 @@ function CustomerSearch() {
   const [name, setName] = useState("");
   const [cpf, setCpf] = useState("");
   const [errorCpf, setErrorCpf] = useState(false);
+  const [searchResult, setSearchResult] = useState(false)
 
   function handleCpf(maskedCpf: string) {
     const onlyNumbers = (str: string) => str.replace(/[^0-9]/g, "");
@@ -29,14 +30,13 @@ function CustomerSearch() {
     setId("");
     setName("");
     setCpf("");
+    setSearchResult(false)
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    console.log(id, cpf, name);
-    if (!errorCpf) {
-
-      cleanInputs();
+    if (!errorCpf){
+      setSearchResult(true)
     }
   }
 
@@ -112,6 +112,22 @@ function CustomerSearch() {
           </Box>
         </FormControl>
       </Paper>
+      { searchResult &&
+      <Paper
+        elevation={2}
+        sx={{
+          padding: "15px",
+        }}  
+      >
+        <Box>
+          <Typography>ID: </Typography>
+          <Typography>Nome: </Typography>
+          <Typography>CPF: </Typography>
+          <Typography>E-Mail: </Typography>
+          <Typography>Data de Nascimento: </Typography>
+        </Box>
+      </Paper>
+      }
     </>
   );
 }
