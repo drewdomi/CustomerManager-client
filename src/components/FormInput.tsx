@@ -1,7 +1,6 @@
 import { TextField } from "@mui/material";
 import InputMask from "react-input-mask";
 
-
 type FormInputProps = {
   value?: string,
   label: string,
@@ -66,8 +65,11 @@ function FormInput({
         size='small'
         onChange={onChange}
         value={value}
-        required = {false}
-        sx={{ ...sx }}
+        required={false}
+        sx={{
+          flexGrow: 1,
+          ...sx
+        }}
       />
     );
   }

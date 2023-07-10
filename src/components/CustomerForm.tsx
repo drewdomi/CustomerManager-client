@@ -121,7 +121,7 @@ function CustomerForm() {
             >Salvar
             </Button>
             <Button
-              type="reset"
+              onClick={cleanInputs}
               startIcon={<DeleteOutlineRoundedIcon />}
             >Limpar
             </Button>

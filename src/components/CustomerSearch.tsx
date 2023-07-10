@@ -1,8 +1,45 @@
-import { Paper, FormControl } from "@mui/material";
+import { Paper, FormControl, Box, Button } from "@mui/material";
 import Title from "./Title";
 import FormInput from "./FormInput";
+import { useState } from "react";
+import isValidCPF from "../snippets/isValidCpf";
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 
 function CustomerSearch() {
+
+  const [id, setId] = useState("");
+  const [name, setName] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [errorCpf, setErrorCpf] = useState(false);
+
+  function handleCpf(maskedCpf: string) {
+    const onlyNumbers = (str: string) => str.replace(/[^0-9]/g, "");
+    setCpf(onlyNumbers(maskedCpf));
+
+    if (maskedCpf.length === 14) {
+      if (isValidCPF(maskedCpf)) {
+        setErrorCpf(false);
+        setCpf(onlyNumbers(maskedCpf));
+      }
+    }
+    else setErrorCpf(true);
+  }
+
+  function cleanInputs() {
+    setId("");
+    setName("");
+    setCpf("");
+  }
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    console.log(id, cpf, name);
+    if (!errorCpf) {
+
+      cleanInputs();
+    }
+  }
+
   return (
     <>
       <Title>
@@ -11,41 +48,68 @@ function CustomerSearch() {
       <Paper
         elevation={2}
         sx={{
-          display: "flex",
-          gap: "10px",
           padding: "15px",
         }}
       >
         <FormControl
+          component="form"
+          autoComplete="off"
+          onSubmit={handleSubmit}
           sx={{
             display: "flex",
-            flexWrap: "wrap",
             gap: "10px",
-            flexDirection: "row",
           }}
         >
-          <FormInput
-            label="ID"
-            type="search"
+          <Box
             sx={{
-              flexGrow: 1,
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "10px",
             }}
-          />
-          <FormInput
-            label="CPF"
-            type="cpf"
-            required={false}
-            sx={{
-              flexGrow: 1,
-            }}
-          />
+          >
+            <FormInput
+              label="ID"
+              type="search"
+              onChange={e => setId(e.target.value)}
+              value={id}
+            />
+            <FormInput
+              label="CPF"
+              type="cpf"
+              onChange={e => handleCpf(e.target.value)}
+              error={errorCpf}
+              value={cpf} 
+              required={false}
+            />
+          </Box>
           <FormInput
             label="Nome"
-            type="search"
-            sx={{
-              flexGrow: 3,
-            }}
+            onChange={e => setName(e.target.value)}
+            value={name}
+            required={false}
           />
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "end",
+              gap: "10px",
+              marginTop: "10px",
+            }}
+          >
+            <Button
+              variant="contained"
+              type="submit"
+            >
+              Pesquisar
+            </Button>
+            <Button
+              onClick={cleanInputs}
+              startIcon={<DeleteOutlineRoundedIcon />}
+            >
+              Limpar
+            </Button>
+          </Box>
         </FormControl>
       </Paper>
     </>
