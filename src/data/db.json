@@ -1,39 +1,46 @@
 {
   "customers": [
     {
-      "id": 1,
-      "name": "Andrew",
+      "name": "Andrew Domingues",
       "email": "drewdomi@proton.me",
-      "cpf": "59869331092",
-      "birthday": "2023-07-06"
+      "cpf": "111111111111",
+      "birthday": "2023-07-06",
+      "id": 1
     },
     {
-      "id": 2,
-      "name": "João",
+      "name": "João Victor",
       "email": "joao@gmail.com",
-      "cpf": "59869331092",
-      "birthday": "2000-04-06"
+      "cpf": "22222222222",
+      "birthday": "2000-04-06",
+      "id": 2
     },
     {
-      "name": "Lucas",
+      "name": "Lucas Montes",
       "email": "lucas@gmail.co",
-      "cpf": "59869331092",
+      "cpf": "33333333333",
       "birthday": "2023-07-19",
       "id": 3
     },
     {
       "name": "Gledson Nunes",
       "email": "gledson@gmail.com",
-      "cpf": "44801632041",
+      "cpf": "44444444444",
       "birthday": "2023-07-11",
       "id": 4
     },
     {
       "name": "Pedro Henrique",
       "email": "pedro@gmail.com",
-      "cpf": "11477861009",
+      "cpf": "55555555555",
       "birthday": "2013-02-08",
       "id": 5
+    },
+    {
+      "name": "Andre Lima",
+      "email": "andre@gmail.com",
+      "cpf": "66666666666",
+      "birthday": "2023-07-10",
+      "id": 6
     }
   ]
 }
