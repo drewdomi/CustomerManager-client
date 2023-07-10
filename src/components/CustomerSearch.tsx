@@ -19,12 +19,32 @@ function CustomerSearch() {
         <FormControl
           sx={{
             display: "flex",
-            flexGrow: 1,
+            flexWrap: "wrap",
+            gap: "10px",
+            flexDirection: "row",
           }}
         >
           <FormInput
+            label="ID"
+            type="search"
+            sx={{
+              flexGrow: 1,
+            }}
+          />
+          <FormInput
+            label="CPF"
+            type="cpf"
+            required={false}
+            sx={{
+              flexGrow: 1,
+            }}
+          />
+          <FormInput
             label="Nome"
             type="search"
+            sx={{
+              flexGrow: 3,
+            }}
           />
         </FormControl>
       </Paper>

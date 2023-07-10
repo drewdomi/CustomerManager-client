@@ -1,5 +1,4 @@
-import { InputAdornment, TextField } from "@mui/material";
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import { TextField } from "@mui/material";
 import InputMask from "react-input-mask";
 
 
@@ -8,10 +7,20 @@ type FormInputProps = {
   label: string,
   type?: string,
   error?: boolean,
+  sx?: object,
+  required?: boolean,
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
 };
 
-function FormInput({ value, label, type = "text", error, onChange }: FormInputProps) {
+function FormInput({
+  value,
+  label,
+  type = "text",
+  error,
+  sx,
+  required = true,
+  onChange,
+  }: FormInputProps) {
   if (type === "cpf") {
     return (
       <InputMask
@@ -24,7 +33,7 @@ function FormInput({ value, label, type = "text", error, onChange }: FormInputPr
           label={label}
           size="small"
           type="text"
-          required
+          required={required}
           error={error}
           sx={{
             flexGrow: 1
@@ -41,7 +50,7 @@ function FormInput({ value, label, type = "text", error, onChange }: FormInputPr
         size="small"
         onChange={onChange}
         type={type}
-        required
+        required = {required}
         value={value}
         sx={{
           flexGrow: 1
@@ -53,17 +62,12 @@ function FormInput({ value, label, type = "text", error, onChange }: FormInputPr
     return (
       <TextField
         type={type}
-        placeholder={label}
+        label={label}
         size='small'
         onChange={onChange}
         value={value}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchRoundedIcon />
-            </InputAdornment>
-          ),
-        }}
+        required = {false}
+        sx={{ ...sx }}
       />
     );
   }
@@ -75,7 +79,7 @@ function FormInput({ value, label, type = "text", error, onChange }: FormInputPr
       type={type}
       error={error}
       value={value}
-      required
+      required = {required}
       sx={{
         flexGrow: 1
       }}
