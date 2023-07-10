@@ -73,6 +73,27 @@ function FormInput({
       />
     );
   }
+  if(type === "id"){
+    return(
+      <InputMask
+        mask="9999999"
+        maskPlaceholder=""
+        value={value}
+        onChange={onChange}
+      >
+        <TextField
+          label={label}
+          size="small"
+          type="text"
+          required={required}
+          error={error}
+          sx={{
+            ...sx
+          }}
+        />
+      </InputMask>
+    )
+  }
   return (
     <TextField
       label={label}
@@ -83,7 +104,7 @@ function FormInput({
       value={value}
       required = {required}
       sx={{
-        flexGrow: 1
+        ...sx
       }}
     />
   );

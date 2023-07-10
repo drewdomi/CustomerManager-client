@@ -2,41 +2,42 @@ import { Paper, FormControl, Box, Button, Typography } from "@mui/material";
 import Title from "./Title";
 import FormInput from "./FormInput";
 import { useState } from "react";
-import isValidCPF from "../snippets/isValidCpf";
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import api from "../services/api";
 
 function CustomerSearch() {
 
   const [id, setId] = useState("");
   const [name, setName] = useState("");
-  const [cpf, setCpf] = useState("");
+  const [cpf] = useState("");
   const [errorCpf, setErrorCpf] = useState(false);
-  const [searchResult, setSearchResult] = useState(false)
+  const [searchResult, setSearchResult] = useState(false);
+  const [birthday] = useState("");
+  const [email] = useState("");
+  const [customer, setCustomer] = useState<CustomerProps>({ id, name, cpf, email, birthday });
 
-  function handleCpf(maskedCpf: string) {
-    const onlyNumbers = (str: string) => str.replace(/[^0-9]/g, "");
-    setCpf(onlyNumbers(maskedCpf));
-
-    if (maskedCpf.length === 14) {
-      if (isValidCPF(maskedCpf)) {
-        setErrorCpf(false);
-        setCpf(onlyNumbers(maskedCpf));
-      }
-    }
-    else setErrorCpf(true);
+  interface CustomerProps {
+    id: string,
+    name: string,
+    cpf: string,
+    email: string,
+    birthday: string,
   }
 
   function cleanInputs() {
     setId("");
     setName("");
-    setCpf("");
-    setSearchResult(false)
+    setErrorCpf(false);
+    setSearchResult(false);
   }
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!errorCpf){
-      setSearchResult(true)
+    if (!errorCpf) {
+      setSearchResult(true);
+      await api.get(`?name_like=${name}`).then(resp => setCustomer(resp.data));
+      console.log(customer);
     }
   }
 
@@ -69,25 +70,25 @@ function CustomerSearch() {
           >
             <FormInput
               label="ID"
-              type="search"
+              type="id"
               onChange={e => setId(e.target.value)}
               value={id}
+              required={false}
+              sx={{
+                flexGrow: 1,
+                width: "100px",
+              }}
             />
             <FormInput
-              label="CPF"
-              type="cpf"
-              onChange={e => handleCpf(e.target.value)}
-              error={errorCpf}
-              value={cpf} 
+              label="Nome"
+              onChange={e => setName(e.target.value)}
+              value={name}
               required={false}
+              sx={{
+                flexGrow: 3,
+              }}
             />
           </Box>
-          <FormInput
-            label="Nome"
-            onChange={e => setName(e.target.value)}
-            value={name}
-            required={false}
-          />
 
           <Box
             sx={{
@@ -100,6 +101,7 @@ function CustomerSearch() {
             <Button
               variant="contained"
               type="submit"
+              startIcon={<SearchRoundedIcon />}
             >
               Pesquisar
             </Button>
@@ -112,21 +114,21 @@ function CustomerSearch() {
           </Box>
         </FormControl>
       </Paper>
-      { searchResult &&
-      <Paper
-        elevation={2}
-        sx={{
-          padding: "15px",
-        }}  
-      >
-        <Box>
-          <Typography>ID: </Typography>
-          <Typography>Nome: </Typography>
-          <Typography>CPF: </Typography>
-          <Typography>E-Mail: </Typography>
-          <Typography>Data de Nascimento: </Typography>
-        </Box>
-      </Paper>
+      {searchResult &&
+        <Paper
+          elevation={2}
+          sx={{
+            padding: "15px",
+          }}
+        >
+          <Box>
+            <Typography>ID: {customer.id}</Typography>
+            <Typography>Nome: {customer.name}</Typography>
+            <Typography>CPF: {customer.cpf}</Typography>
+            <Typography>E-Mail: {customer.email}</Typography>
+            <Typography>Data de Nascimento: {customer.birthday}</Typography>
+          </Box>
+        </Paper>
       }
     </>
   );
