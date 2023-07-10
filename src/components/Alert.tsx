@@ -4,6 +4,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 export type AlertProps = {
   alertToggleOpen: boolean,
@@ -33,7 +34,11 @@ function Alert({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={alertHandleClose} autoFocus>
+          <Button
+            onClick={alertHandleClose}
+            variant="contained"
+            startIcon={<CloseRoundedIcon/>}
+            >
             Fechar
           </Button>
         </DialogActions>

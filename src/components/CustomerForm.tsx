@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import { Button, FormControl, TextField, Box, Typography } from "@mui/material";
-import CpfInput from './CpfInput';
+import { Paper, Button, FormControl, Box } from "@mui/material";
 import isValidCPF from '../snippets/isValidCpf';
 import Alert from './Alert';
+import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import api from '../services/api';
+import Title from './Title';
+import FormInput from './FormInput';
 
 function CustomerForm() {
   const [name, setName] = useState("");
@@ -14,8 +18,9 @@ function CustomerForm() {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!errorCpf) {
-      alertHandleOpen()
-      console.log(name, cpf, birthday, email);
+      alertHandleOpen();
+      api.post("", { name, email, cpf, birthday });
+      cleanInputs()
     }
   }
 
@@ -31,7 +36,7 @@ function CustomerForm() {
     else setErrorCpf(true);
   }
 
-    const [alertToggleOpen, setAlertToggleOpen] = useState(false);
+  const [alertToggleOpen, setAlertToggleOpen] = useState(false);
 
   const alertHandleOpen = () => {
     setAlertToggleOpen(true);
@@ -41,87 +46,94 @@ function CustomerForm() {
     setAlertToggleOpen(false);
   };
 
+  function cleanInputs(){
+    setName("")
+    setEmail("")
+    setCpf("")
+    setBirthday("")
+  }
+
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        maxWidth: 700,
-        margin: "auto",
-        gap: "15px",
-      }}
-    >
-      <Typography
-        variant='h2'
-        fontSize="28px"
-        fontWeight="Bold"
-      >
+    <>
+      <Title>
         Cadastrar Cliente
-      </Typography>
-      <FormControl
-        component="form"
-        autoComplete="off"
-        onSubmit={handleSubmit}
+      </Title>
+      <Paper
+        elevation={2}
         sx={{
-          display: "flex",
-          gap: "10px",
-          boxShadow: "0 1px 4px #000000aa",
-          padding: "20px",
-          borderRadius: 2,
+          padding: "15px",
         }}
       >
-        <TextField
-          label="Nome"
-          size='small'
-          onChange={e => setName(e.target.value)}
-          required
-        />
-        <TextField
-          label="E-mail"
-          size='small'
-          onChange={e => setEmail(e.target.value)}
-          type="email"
-          required
-        />
-        <CpfInput
-          label="CPF"
-          onChange={event => handleCpf(event.target.value)}
-          error={errorCpf}
-        />
-        <TextField
-          label="Data de Nascimento"
-          InputLabelProps={{ shrink: true }}
-          size="small"
-          onChange={e => setBirthday(e.target.value)}
-          type="date"
-          required
-        />
-        <Box
+        <FormControl
+          component="form"
+          autoComplete="off"
+          onSubmit={handleSubmit}
           sx={{
             display: "flex",
-            justifyContent: "end",
             gap: "10px",
-            marginTop: "10px",
           }}
         >
-          <Button
-            variant="contained"
-            type="submit"
-          >Salvar
-          </Button>
-          <Button
-            type="reset"
-          >Limpar
-          </Button>
-        </Box>
-      </FormControl>
+          <FormInput
+            label="Nome"
+            onChange={e => setName(e.target.value)}
+            value={name}
+          />
+          <FormInput
+            label="E-Mail"
+            type="email"
+            onChange={e => setEmail(e.target.value)}
+            value={email}
+          />
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "10px",
+            }}
+          >
+            <FormInput
+              label="CPF"
+              type="cpf"
+              onChange={e => handleCpf(e.target.value)}
+              error={errorCpf}
+              value={cpf}
+            />
+            <FormInput
+              label="Data de Nascimento"
+              type="date"
+              onChange={e => setBirthday(e.target.value)}
+              value={birthday}
+            />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "end",
+              gap: "10px",
+              marginTop: "10px",
+            }}
+          >
+            <Button
+              variant="contained"
+              type="submit"
+              startIcon={<DoneRoundedIcon />}
+            >Salvar
+            </Button>
+            <Button
+              type="reset"
+              startIcon={<DeleteOutlineRoundedIcon />}
+            >Limpar
+            </Button>
+          </Box>
+        </FormControl>
+      </Paper>
       <Alert
         alertHandleClose={alertHandleClose}
         alertHandleOpen={alertHandleOpen}
         alertToggleOpen={alertToggleOpen}
         alertTitle={`Cliente Cadastrado com Sucesso`}
       />
-    </Box>
+    </>
   );
 }
 

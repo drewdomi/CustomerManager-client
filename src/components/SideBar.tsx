@@ -21,10 +21,6 @@ import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 
 const drawerWidth = 260;
 
-type PropsTypes = {
-  children: JSX.Element;
-};
-
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
 }>(({ theme, open }) => ({
@@ -81,7 +77,6 @@ interface ListItemLinkProps {
 
 function ListItemLink(props: ListItemLinkProps) {
   const { icon, primary, to } = props;
-
   return (
     <ListItemButton href={to}>
       <ListItemIcon>{icon}</ListItemIcon>
@@ -90,8 +85,7 @@ function ListItemLink(props: ListItemLinkProps) {
   );
 }
 
-
-export default function SideBar({ children }: PropsTypes) {
+export default function SideBar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -131,7 +125,7 @@ export default function SideBar({ children }: PropsTypes) {
             boxSizing: 'border-box',
           },
         }}
-        variant="persistent"
+        variant="temporary"
         anchor="left"
         open={open}
       >
@@ -154,8 +148,6 @@ export default function SideBar({ children }: PropsTypes) {
         </List>
       </Drawer>
       <Main open={open}>
-        <DrawerHeader />
-        {children}
       </Main>
     </Box>
   );
