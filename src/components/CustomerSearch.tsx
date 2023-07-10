@@ -15,7 +15,7 @@ function CustomerSearch() {
   const [searchResult, setSearchResult] = useState(false);
   const [birthday] = useState("");
   const [email] = useState("");
-  const [customer, setCustomer] = useState<CustomerProps>({ id, name, cpf, email, birthday });
+  const [customer, setCustomer] = useState<CustomerProps[]>([{ id, name, cpf, email, birthday }]);
 
   interface CustomerProps {
     id: string,
@@ -40,7 +40,6 @@ function CustomerSearch() {
       console.log(customer);
     }
   }
-
   return (
     <>
       <Title>
@@ -89,7 +88,6 @@ function CustomerSearch() {
               }}
             />
           </Box>
-
           <Box
             sx={{
               display: "flex",
@@ -121,13 +119,23 @@ function CustomerSearch() {
             padding: "15px",
           }}
         >
-          <Box>
-            <Typography>ID: {customer.id}</Typography>
-            <Typography>Nome: {customer.name}</Typography>
-            <Typography>CPF: {customer.cpf}</Typography>
-            <Typography>E-Mail: {customer.email}</Typography>
-            <Typography>Data de Nascimento: {customer.birthday}</Typography>
-          </Box>
+          {customer.map((customer, key) => {
+            return (
+              <Box
+                key={key}
+                sx={{
+                  marginBottom: "20px",
+                }}
+              >
+                <Typography>ID: {customer.id}</Typography>
+                <Typography>Nome: {customer.name}</Typography>
+                <Typography>CPF: {customer.cpf}</Typography>
+                <Typography>E-Mail: {customer.email}</Typography>
+                <Typography>Data de Nascimento: {customer.birthday}</Typography>
+              </Box>
+            );
+          })}
+
         </Paper>
       }
     </>
