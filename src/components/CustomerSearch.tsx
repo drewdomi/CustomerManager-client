@@ -36,7 +36,7 @@ function CustomerSearch() {
     event.preventDefault();
     if (!errorCpf) {
       setSearchResult(true);
-      await api.get(`?name_like=${name}`).then(resp => setCustomer(resp.data));
+      await api.get(`?name_like=${name}${id ? `&id=${id}` : ""}`).then(resp => setCustomer(resp.data));
       console.log(customer);
     }
   }
