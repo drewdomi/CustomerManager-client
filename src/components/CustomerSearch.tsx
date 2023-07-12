@@ -31,7 +31,7 @@ function CustomerSearch() {
     birthday: string,
   }
 
-  const alertHandle = (customer: CustomerProps) => {
+  const handleCustomerDeleteOnClick = (customer: CustomerProps) => {
     alertHandleToggle();
     setAlertCustomerName(customer.name)
     setAlertCustomerId(customer.id)
@@ -41,13 +41,13 @@ function CustomerSearch() {
     setAlertToggle(prev => !prev);
   };
 
-  const handleCancel = () => {
+  const alertHandleCancelDelete = () => {
     setAlertToggle(false)
     setAlertCustomerName("")
     setAlertCustomerId("")
   }
 
-  function cleanInputs() {
+  function cleanInputsOnClick() {
     setId("");
     setName("");
     setAlertCustomerName("")
@@ -81,8 +81,8 @@ function CustomerSearch() {
       <CustomAlert
         alertWarning={alertToggle}
         customerName={alertCustomerName}
-        handleConfirm={confirmDelete}
-        handleCancel={handleCancel}
+        alertHandleConfirm={confirmDelete}
+        alertHandleCancel={alertHandleCancelDelete}
       />
       <Title>
         Pesquisar Cliente
@@ -146,7 +146,7 @@ function CustomerSearch() {
               Pesquisar
             </Button>
             <Button
-              onClick={cleanInputs}
+              onClick={cleanInputsOnClick}
               startIcon={<DeleteOutlineRoundedIcon />}
             >
               Limpar
@@ -166,7 +166,7 @@ function CustomerSearch() {
               <Box
                 key={key}
                 sx={{
-                  paddingBottom: "10px",
+                  paddingBottom: "20px",
                   marginBottom: "10px",
                   borderBottom: "solid 1px #b4b4b4",
                 }}
@@ -183,7 +183,7 @@ function CustomerSearch() {
                     display: "flex",
                     justifyContent: "end",
                     gap: "10px",
-                    marginTop: "10px",
+                    marginTop: "20px",
                   }}
                 >
                   <Button
@@ -197,7 +197,7 @@ function CustomerSearch() {
                   <Button
                     variant="outlined"
                     color="error"
-                    onClick={() => alertHandle(customer)}
+                    onClick={() => handleCustomerDeleteOnClick(customer)}
                     startIcon={<PersonRemoveRoundedIcon />}
                   >
                     Excluir
