@@ -36,7 +36,7 @@ function CustomerSearch() {
     event.preventDefault();
     if (!errorCpf) {
       setSearchResult(true);
-      await api.get(`?name_like=${name}`).then(resp => setCustomer(resp.data));
+      await api.get(`?name_like=${name}${id ? `&id=${id}` : ""}`).then(resp => setCustomer(resp.data));
       console.log(customer);
     }
   }
@@ -124,14 +124,16 @@ function CustomerSearch() {
               <Box
                 key={key}
                 sx={{
-                  marginBottom: "20px",
+                  paddingBottom: "10px",
+                  marginBottom: "10px",
+                  borderBottom: "solid 1px #b4b4b4",
                 }}
               >
-                <Typography>ID: {customer.id}</Typography>
-                <Typography>Nome: {customer.name}</Typography>
-                <Typography>CPF: {customer.cpf}</Typography>
-                <Typography>E-Mail: {customer.email}</Typography>
-                <Typography>Data de Nascimento: {customer.birthday}</Typography>
+                <Typography><strong>ID:</strong> {customer.id}</Typography>
+                <Typography><strong>Nome:</strong> {customer.name}</Typography>
+                <Typography><strong>CPF:</strong> {customer.cpf}</Typography>
+                <Typography><strong>E-Mail:</strong> {customer.email}</Typography>
+                <Typography><strong>Data de Nascimento:</strong> {customer.birthday}</Typography>
               </Box>
             );
           })}
