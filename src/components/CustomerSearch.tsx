@@ -41,6 +41,12 @@ function CustomerSearch() {
     setAlertToggle(prev => !prev);
   };
 
+  const handleCancel = () => {
+    setAlertToggle(false)
+    setAlertCustomerName("")
+    setAlertCustomerId("")
+  }
+
   function cleanInputs() {
     setId("");
     setName("");
@@ -76,6 +82,7 @@ function CustomerSearch() {
         alertWarning={alertToggle}
         customerName={alertCustomerName}
         handleConfirm={confirmDelete}
+        handleCancel={handleCancel}
       />
       <Title>
         Pesquisar Cliente
