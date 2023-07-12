@@ -3,6 +3,7 @@ import Title from "./Title";
 import FormInput from "./FormInput";
 import { useState } from "react";
 import api from "../services/api";
+import CustomAlert from './CustomAlert';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
@@ -19,6 +20,20 @@ function CustomerSearch() {
   const [email] = useState("");
   const [customer, setCustomer] = useState<CustomerProps[]>([{ id, name, cpf, email, birthday }]);
 
+
+  const [alertToggleOpen, setAlertToggleOpen] = useState(true);
+
+  const alertHandleOpen = () => {
+    setAlertToggleOpen(true);
+  };
+
+  const alertHandleClose = () => {
+    setAlertToggleOpen(false);
+  };
+
+  const alertHandleConfirm = () => {
+    alertHandleClose();
+  };
   interface CustomerProps {
     id: string,
     name: string,
@@ -50,6 +65,8 @@ function CustomerSearch() {
 
   return (
     <>
+      <CustomAlert
+      />
       <Title>
         Pesquisar Cliente
       </Title>

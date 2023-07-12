@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Paper, Button, FormControl, Box } from "@mui/material";
 import isValidCPF from '../snippets/isValidCpf';
-import Alert from './Alert';
+import CustomAlert from './CustomAlert';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import api from '../services/api';
@@ -18,7 +18,7 @@ function CustomerForm() {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!errorCpf) {
-      alertHandleOpen();
+      alertHandleToggle();
       api.post("", { name, email, cpf, birthday });
       cleanInputs()
     }
@@ -38,13 +38,12 @@ function CustomerForm() {
   }
 
   const [alertToggleOpen, setAlertToggleOpen] = useState(false);
-
-  const alertHandleOpen = () => {
-    setAlertToggleOpen(true);
-  };
-
-  const alertHandleClose = () => {
-    setAlertToggleOpen(false);
+  
+  const alertHandleToggle = () => {
+    setAlertToggleOpen(prev => !prev);
+    setTimeout(() => {
+      setAlertToggleOpen(false)
+    }, 2000)
   };
 
   function cleanInputs(){
@@ -56,6 +55,9 @@ function CustomerForm() {
 
   return (
     <>
+    <CustomAlert
+      alertToggleOpen={alertToggleOpen}
+    />
       <Title>
         Cadastrar Cliente
       </Title>
@@ -128,12 +130,6 @@ function CustomerForm() {
           </Box>
         </FormControl>
       </Paper>
-      <Alert
-        alertHandleClose={alertHandleClose}
-        alertHandleOpen={alertHandleOpen}
-        alertToggleOpen={alertToggleOpen}
-        alertTitle={`Cliente Cadastrado com Sucesso`}
-      />
     </>
   );
 }
