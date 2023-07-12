@@ -19,21 +19,10 @@ function CustomerSearch() {
   const [birthday] = useState("");
   const [email] = useState("");
   const [customer, setCustomer] = useState<CustomerProps[]>([{ id, name, cpf, email, birthday }]);
+  const [alertCustomerName, setAlertCustomerName] = useState("")
+  const [alertCustomerId, setAlertCustomerId] = useState("")
 
-
-  const [alertToggleOpen, setAlertToggleOpen] = useState(true);
-
-  const alertHandleOpen = () => {
-    setAlertToggleOpen(true);
-  };
-
-  const alertHandleClose = () => {
-    setAlertToggleOpen(false);
-  };
-
-  const alertHandleConfirm = () => {
-    alertHandleClose();
-  };
+  const [alertToggle, setAlertToggle] = useState(false);
   interface CustomerProps {
     id: string,
     name: string,
@@ -42,9 +31,22 @@ function CustomerSearch() {
     birthday: string,
   }
 
+  const alertHandle = (customer: CustomerProps) => {
+    alertHandleToggle();
+    setAlertCustomerName(customer.name)
+    setAlertCustomerId(customer.id)
+  };
+
+  const alertHandleToggle = () => {
+    setAlertToggle(prev => !prev);
+  };
+
   function cleanInputs() {
     setId("");
     setName("");
+    setAlertCustomerName("")
+    setAlertCustomerId("")
+    setAlertToggle(false)
     setErrorCpf(false);
     setSearchResult(false);
   }
@@ -63,9 +65,17 @@ function CustomerSearch() {
     setSearchResult(false);
   }
 
+  const confirmDelete = () => {
+    deleteCustomer(alertCustomerId);
+    alertHandleToggle()
+  }
+
   return (
     <>
       <CustomAlert
+        alertWarning={alertToggle}
+        customerName={alertCustomerName}
+        handleConfirm={confirmDelete}
       />
       <Title>
         Pesquisar Cliente
@@ -180,7 +190,7 @@ function CustomerSearch() {
                   <Button
                     variant="outlined"
                     color="error"
-                    onClick={() => deleteCustomer(customer.id)}
+                    onClick={() => alertHandle(customer)}
                     startIcon={<PersonRemoveRoundedIcon />}
                   >
                     Excluir
