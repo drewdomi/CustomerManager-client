@@ -4,8 +4,10 @@ Bem-vindo ao nosso repositório do **Customer Manager**! Esta aplicação fornec
 ## 🔥 Como rodar esse projeto?
 - Primeiro baixe o repositório (seja pelas por `git clone` ou através de um arquivo .zip pelo Github).
 - Com o projeto já **baixado** e descompactado entre na pasta e **rode o comando** `npm install` ou `yarn` para baixar e instalar todas as dependencias!!
-- Agora dê o comando `npm run dev` ou `yarn dev` para iniciar o projeto localmente.
+- Agora dê o comando `npm run dev` ou `yarn dev` para iniciar o Front-End do projeto.
+- Depois o comando `npm run server` para iniciar o Json-Server e a API.
 - O projeto estará disponível para acesso apartir de um link mais ou menos assim `http://127.0.0.1:5173/`.
+- Pronto agora e só inserir os clientes e pesquisar acessando pela barra lateral ou usando a ULR `http://127.0.0.1:5173/search`
 
 ## 💡 Características principais:
 
