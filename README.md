@@ -1,27 +1,34 @@
-Welcome to our GitHub repository for the **Customer Manager**! This application provides users with a seamless experience to **register**, **search**, **edit**, and **exclude** customers **from a comprehensive database**. It was built using popular technologies such as **React**, **React Router**, **Material UI**, and utilizes an **API for document number verification**. The underlying database for this application is **SQL Server**, ensuring efficient storage and retrieval of customer data.
+Bem-vindo ao nosso repositório do **Customer Manager**! Esta aplicação fornece aos usuários uma experiência perfeita para **registrar** e **pesquisar** clientes **de um banco de dados**. Ele foi construído usando tecnologias populares como **React**, **React Router**, **Material UI**.
 
-## Key Features:
+## Características principais:
 
-- **Customer Registration**: Users can easily register new customers by entering relevant details such as name, contact information, and document numbers.
-- **Customer Search**: The app allows users to search for customers in the database using various parameters, including name, making it convenient to find specific individuals quickly.
-- **Customer Editing**: Users have the ability to update customer information, such as contact details or document numbers, ensuring accurate and up-to-date data.
-- **Customer Exclusion**: The app provides functionality to exclude customers from the database when necessary, removing their information from future search results.
-- **Document Number Verification**: To enhance data accuracy, the app integrates with an API that verifies the validity of document numbers, ensuring only valid documents are entered into the system.
-- **Responsive Design**: The application has been developed using React and Material UI, providing an intuitive and visually appealing user interface that adapts seamlessly to different screen sizes and devices.
+- **Cadastro de Clientes**: Os usuários podem registrar facilmente novos clientes inserindo detalhes relevantes, como Nome, E-Mail e CPF.
+- **Pesquisa de clientes**: Permite que os usuários pesquisem clientes no banco de dados com parâmetros, incluindo Nome e ID, facilitando a localização rápida de indivíduos específicos.
+- **Edição do cliente**: os usuários têm a capacidade de atualizar as informações do cliente, como Nome e E-Mail, garantindo dados precisos e atualizados.
+- **Exclusão de Clientes**: Fornece funcionalidade para excluir clientes do banco de dados quando necessário, removendo suas informações de futuros resultados de pesquisa.
+- **Verificação do número do documento**: para aumentar a precisão dos dados, a aplicação faz a validação do CPF, garantindo que apenas documentos válidos sejam inseridos no sistema.
+- **Design Responsivo**: O aplicativo foi desenvolvido usando React e Material UI, fornecendo uma interface de usuário intuitiva e visualmente atraente que se adapta perfeitamente a diferentes tamanhos de tela e dispositivos.
 
-## Technologies Used:
+## Tecnologias Utilizadas:
 
-- **React**: A popular JavaScript library used for building user interfaces, enabling efficient rendering and seamless updates.
-- **React Router**: A powerful routing library for React that facilitates navigation and URL management within the application.
-- **Material UI**: A UI component library that offers pre-styled, ready-to-use components, ensuring a modern and visually pleasing design.
-- **API for Document Number Verification**: An external API is integrated into the application to validate the authenticity and correctness of document numbers.
-- **SQL Server**: A robust and reliable relational database management system used for efficient data storage and retrieval.
+- **React**: uma biblioteca JavaScript popular usada para criar interfaces de usuário, permitindo renderização eficiente e atualizações contínuas.
+
+- **React Router**: Uma poderosa biblioteca de roteamento para React que facilita a navegação e o gerenciamento de URL dentro do aplicativo.
+
+- **Material UI**: Uma biblioteca de componentes de UI que oferece componentes pré-estilizados e prontos para uso e customizações, garantindo um design moderno e visualmente agradável.
+
+- **TypeScript**: Um supersest JavaScript que adiciona recursos de tipagem estática e outros recursos avançados para melhorar a produtividade e a qualidade do código. Ele nos ajuda a evitar erros comuns e oferece um ambiente de desenvolvimento mais robusto.
+
+- **Json-Server**: uma solução de servidor de API simulada durante o desenvolvimento do projeto. O Json-Server nos permite criar rapidamente uma API REST simulada com dados armazenados em arquivos JSON. Isso é útil para desenvolver e testar o front-end antes de ter um back-end totalmente funcional.
 
 ## Todos
 
-- [x] Add Router
-- [ ] Make layout style
-- [ ] Make customer register page
-- [ ] Make customer search page
+- [x] Adicionar Rotas
+- [x] Layout página de cadastro do cliente
+- [x] Layout página de pesquisa do cliente
+- [x] Salvar cadastro de cliente
+- [x] Pesquisar cadastro de cliente
+- [ ] Editar cadastro de cliente
+- [ ] Pesquisar cadastro de cliente
 
-We believe that this Customer Management App will greatly simplify and streamline customer-related operations for your organization. Please feel free to explore the repository, contribute, and provide feedback to help us improve the application further.
+Acreditamos que este aplicativo para gerenciamento de clientes simplificará e agilizará muito as operações relacionadas a cadastros de novos clientes no banco de dados e a consulta do mesmo. Sinta-se à vontade para explorar o repositório, contribuir e fornecer feedback para nos ajudar a melhorar ainda mais o aplicativo.
