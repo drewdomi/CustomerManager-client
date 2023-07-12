@@ -15,12 +15,18 @@ function CustomerForm() {
   const [birthday, setBirthday] = useState("");
   const [email, setEmail] = useState("");
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const isValidCpf = await api.get(`?cpf=${cpf}`).then(resp => resp.data);
     if (!errorCpf) {
-      alertHandleToggle();
-      api.post("", { name, email, cpf, birthday });
-      cleanInputs()
+      if (isValidCpf.length === 0) {
+        alertHandleToggle();
+        await api.post("", { name, email, cpf, birthday });
+        cleanInputs();
+      }
+      else {
+        alertHandleErrorCpf();
+      }
     }
   }
 
@@ -38,26 +44,46 @@ function CustomerForm() {
   }
 
   const [alertToggleOpen, setAlertToggleOpen] = useState(false);
-  
+  const [alertErrorCpf, setAlertErrorCpf] = useState(false);
+
+  const alertHandleErrorCpf = () => {
+    setAlertErrorCpf(prev => !prev);
+    setTimeout(() => {
+      setAlertErrorCpf(false);
+    }, 4000);
+  };
+
   const alertHandleToggle = () => {
     setAlertToggleOpen(prev => !prev);
     setTimeout(() => {
-      setAlertToggleOpen(false)
-    }, 2000)
+      setAlertToggleOpen(false);
+    }, 4000);
   };
 
-  function cleanInputs(){
-    setName("")
-    setEmail("")
-    setCpf("")
-    setBirthday("")
+  function cleanInputs() {
+    setName("");
+    setEmail("");
+    setCpf("");
+    setBirthday("");
   }
 
   return (
     <>
-    <CustomAlert
-      alertToggleOpen={alertToggleOpen}
-    />
+      {
+        alertToggleOpen &&
+        <CustomAlert
+          alertMessage="Cliente cadastrado com sucesso!!"
+          type="success"
+        />
+      }
+      {
+        alertErrorCpf &&
+        <CustomAlert
+          alertMessage="Cliente já cadastrado"
+          type="error"
+        />
+
+      }
       <Title>
         Cadastrar Cliente
       </Title>
