@@ -3,7 +3,6 @@ import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 
 type AlertProps = {
-  customerName?: string,
   alertHandleConfirm?: () => void,
   alertHandleCancel?: () => void,
   type: "warn" | "success" | "error",
@@ -11,7 +10,6 @@ type AlertProps = {
 };
 
 export default function CustomAlert({
-  customerName,
   alertHandleConfirm,
   alertHandleCancel,
   alertMessage,
@@ -32,6 +30,7 @@ export default function CustomAlert({
       </Stack>
     );
   }
+
   if (type === "warn") {
     return (
       <Stack sx={{
@@ -71,7 +70,7 @@ export default function CustomAlert({
             </>
           }
         >
-          {alertMessage} <strong>{customerName}</strong>
+          {alertMessage}
         </Alert>
       </Stack>
     );

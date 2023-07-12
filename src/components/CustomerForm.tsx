@@ -25,8 +25,13 @@ function CustomerForm() {
         cleanInputs();
       }
       else {
+        setErrorCpfMessage("Cliente já cadastrado");
         alertHandleErrorCpf();
       }
+    }
+    else {
+      setErrorCpfMessage("CPF Inválido");
+      alertHandleErrorCpf();
     }
   }
 
@@ -45,6 +50,7 @@ function CustomerForm() {
 
   const [alertToggleOpen, setAlertToggleOpen] = useState(false);
   const [alertErrorCpf, setAlertErrorCpf] = useState(false);
+  const [errorCpfMessage, setErrorCpfMessage] = useState("")
 
   const alertHandleErrorCpf = () => {
     setAlertErrorCpf(prev => !prev);
@@ -79,7 +85,7 @@ function CustomerForm() {
       {
         alertErrorCpf &&
         <CustomAlert
-          alertMessage="Cliente já cadastrado"
+          alertMessage={errorCpfMessage}
           type="error"
         />
 

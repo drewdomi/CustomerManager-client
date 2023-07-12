@@ -10,7 +10,6 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import PersonRemoveRoundedIcon from '@mui/icons-material/PersonRemoveRounded';
 
 function CustomerSearch() {
-
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [cpf] = useState("");
@@ -19,10 +18,11 @@ function CustomerSearch() {
   const [birthday] = useState("");
   const [email] = useState("");
   const [customer, setCustomer] = useState<CustomerProps[]>([{ id, name, cpf, email, birthday }]);
-  const [alertCustomerName, setAlertCustomerName] = useState("")
-  const [alertCustomerId, setAlertCustomerId] = useState("")
+  const [alertCustomerName, setAlertCustomerName] = useState("");
+  const [alertCustomerId, setAlertCustomerId] = useState("");
+  const [alertWarn, setAlertWarn] = useState(false);
+  const [alertSuccess, setAlertSuccess] = useState(false);
 
-  const [alertToggle, setAlertToggle] = useState(false);
   interface CustomerProps {
     id: string,
     name: string,
@@ -33,36 +33,37 @@ function CustomerSearch() {
 
   const handleCustomerDeleteOnClick = (customer: CustomerProps) => {
     alertHandleToggle();
-    setAlertCustomerName(customer.name)
-    setAlertCustomerId(customer.id)
+    setAlertCustomerName(customer.name);
+    setAlertCustomerId(customer.id);
   };
 
   const alertHandleToggle = () => {
-    setAlertToggle(prev => !prev);
+    setAlertWarn(prev => !prev);
   };
 
   const alertHandleCancelDelete = () => {
-    setAlertToggle(false)
-    setAlertCustomerName("")
-    setAlertCustomerId("")
-  }
+    setAlertWarn(false);
+    setAlertCustomerName("");
+    setAlertCustomerId("");
+  };
 
   function cleanInputsOnClick() {
     setId("");
     setName("");
-    setAlertCustomerName("")
-    setAlertCustomerId("")
-    setAlertToggle(false)
+    setAlertCustomerName("");
+    setAlertCustomerId("");
+    setAlertWarn(false);
     setErrorCpf(false);
     setSearchResult(false);
+    setAlertSuccess(false);
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!errorCpf) {
       setSearchResult(true);
-      await api.get(`?name_like=${name}${id ? `&id=${id}` : ""}`).then(resp => setCustomer(resp.data));
-      console.log(customer);
+      await api.get(`?name_like=${name}${id ? `&id=${id}` : ""}`)
+        .then(resp => setCustomer(resp.data));
     }
   }
 
@@ -73,17 +74,32 @@ function CustomerSearch() {
 
   const confirmDelete = () => {
     deleteCustomer(alertCustomerId);
-    alertHandleToggle()
-  }
+    alertHandleToggle();
+    setAlertSuccess(true);
+    setTimeout(() => {
+      setAlertSuccess(false);
+    }, 3000);
+  };
 
   return (
     <>
-      <CustomAlert
-        alertWarning={alertToggle}
-        customerName={alertCustomerName}
-        alertHandleConfirm={confirmDelete}
-        alertHandleCancel={alertHandleCancelDelete}
-      />
+      {
+        alertWarn &&
+        <CustomAlert
+          type="warn"
+          alertMessage={`Excluir: ${alertCustomerName}`}
+          alertHandleConfirm={confirmDelete}
+          alertHandleCancel={alertHandleCancelDelete}
+        />
+      }
+      {
+        alertSuccess &&
+        <CustomAlert
+          type="success"
+          alertMessage="Sucesso!!"
+        />
+
+      }
       <Title>
         Pesquisar Cliente
       </Title>
