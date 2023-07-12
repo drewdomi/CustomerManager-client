@@ -2,9 +2,11 @@ import { Paper, FormControl, Box, Button, Typography } from "@mui/material";
 import Title from "./Title";
 import FormInput from "./FormInput";
 import { useState } from "react";
+import api from "../services/api";
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import api from "../services/api";
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import PersonRemoveRoundedIcon from '@mui/icons-material/PersonRemoveRounded';
 
 function CustomerSearch() {
 
@@ -40,6 +42,12 @@ function CustomerSearch() {
       console.log(customer);
     }
   }
+
+  async function deleteCustomer(id: string) {
+    await api.delete(`${id}`);
+    setSearchResult(false);
+  }
+
   return (
     <>
       <Title>
@@ -129,15 +137,41 @@ function CustomerSearch() {
                   borderBottom: "solid 1px #b4b4b4",
                 }}
               >
-                <Typography><strong>ID:</strong> {customer.id}</Typography>
-                <Typography><strong>Nome:</strong> {customer.name}</Typography>
-                <Typography><strong>CPF:</strong> {customer.cpf}</Typography>
-                <Typography><strong>E-Mail:</strong> {customer.email}</Typography>
-                <Typography><strong>Data de Nascimento:</strong> {customer.birthday}</Typography>
+                <Box>
+                  <Typography><strong>ID:</strong> {customer.id}</Typography>
+                  <Typography><strong>Nome:</strong> {customer.name}</Typography>
+                  <Typography><strong>CPF:</strong> {customer.cpf}</Typography>
+                  <Typography><strong>E-Mail:</strong> {customer.email}</Typography>
+                  <Typography><strong>Data de Nascimento:</strong> {customer.birthday}</Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "end",
+                    gap: "10px",
+                    marginTop: "10px",
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    color="success"
+                    startIcon={<EditRoundedIcon />}
+                    onClick={() => alert("edit")}
+                  >
+                    Editar
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={() => deleteCustomer(customer.id)}
+                    startIcon={<PersonRemoveRoundedIcon />}
+                  >
+                    Excluir
+                  </Button>
+                </Box>
               </Box>
             );
           })}
-
         </Paper>
       }
     </>
