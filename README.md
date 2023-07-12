@@ -1,6 +1,13 @@
+## 💭 Oque é esse projeto?
 Bem-vindo ao nosso repositório do **Customer Manager**! Esta aplicação fornece aos usuários uma experiência perfeita para **registrar** e **pesquisar** clientes **de um banco de dados**. Ele foi construído usando tecnologias populares como **React**, **React Router**, **Material UI**.
 
-## Características principais:
+## 🔥 Como rodar esse projeto?
+- Primeiro baixe o repositório (seja pelas por `git clone` ou através de um arquivo .zip pelo Github).
+- Com o projeto já **baixado** e descompactado entre na pasta e **rode o comando** `npm install` ou `yarn` para baixar e instalar todas as dependencias!!
+- Agora dê o comando `npm run dev` ou `yarn dev` para iniciar o projeto localmente.
+- O projeto estará disponível para acesso apartir de um link mais ou menos assim `http://127.0.0.1:5173/`.
+
+## 💡 Características principais:
 
 - **Cadastro de Clientes**: Os usuários podem registrar facilmente novos clientes inserindo detalhes relevantes, como Nome, E-Mail e CPF.
 - **Pesquisa de clientes**: Permite que os usuários pesquisem clientes no banco de dados com parâmetros, incluindo Nome e ID, facilitando a localização rápida de indivíduos específicos.
@@ -9,7 +16,7 @@ Bem-vindo ao nosso repositório do **Customer Manager**! Esta aplicação fornec
 - **Verificação do número do documento**: para aumentar a precisão dos dados, a aplicação faz a validação do CPF, garantindo que apenas documentos válidos sejam inseridos no sistema.
 - **Design Responsivo**: O aplicativo foi desenvolvido usando React e Material UI, fornecendo uma interface de usuário intuitiva e visualmente atraente que se adapta perfeitamente a diferentes tamanhos de tela e dispositivos.
 
-## Tecnologias Utilizadas:
+## 🖥️ Tecnologias Utilizadas:
 
 - **React**: uma biblioteca JavaScript popular usada para criar interfaces de usuário, permitindo renderização eficiente e atualizações contínuas.
 
@@ -21,7 +28,7 @@ Bem-vindo ao nosso repositório do **Customer Manager**! Esta aplicação fornec
 
 - **Json-Server**: uma solução de servidor de API simulada durante o desenvolvimento do projeto. O Json-Server nos permite criar rapidamente uma API REST simulada com dados armazenados em arquivos JSON. Isso é útil para desenvolver e testar o front-end antes de ter um back-end totalmente funcional.
 
-## Todos
+## ✅ Todos
 
 - [x] Adicionar Rotas
 - [x] Layout página de cadastro do cliente
