@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 type AlertProps = {
   alertToggleOpen?: boolean;
   alertWarning?: boolean,
-  customerName: string,
+  customerName?: string,
   alertHandleConfirm?: () => void,
   alertHandleCancel?: () => void,
 };
