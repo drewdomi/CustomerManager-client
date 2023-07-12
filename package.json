@@ -9,7 +9,7 @@
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "server": "json-server --watch -H 192.168.0.131 src/data/db.json"
+    "server": "json-server --watch src/data/db.json"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
