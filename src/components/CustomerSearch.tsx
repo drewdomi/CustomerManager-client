@@ -2,9 +2,12 @@ import { Paper, FormControl, Box, Button, Typography } from "@mui/material";
 import Title from "./Title";
 import FormInput from "./FormInput";
 import { useState } from "react";
+import api from "../services/api";
+import CustomAlert from './CustomAlert';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import api from "../services/api";
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import PersonRemoveRoundedIcon from '@mui/icons-material/PersonRemoveRounded';
 
 function CustomerSearch() {
 
@@ -16,7 +19,10 @@ function CustomerSearch() {
   const [birthday] = useState("");
   const [email] = useState("");
   const [customer, setCustomer] = useState<CustomerProps[]>([{ id, name, cpf, email, birthday }]);
+  const [alertCustomerName, setAlertCustomerName] = useState("")
+  const [alertCustomerId, setAlertCustomerId] = useState("")
 
+  const [alertToggle, setAlertToggle] = useState(false);
   interface CustomerProps {
     id: string,
     name: string,
@@ -25,9 +31,28 @@ function CustomerSearch() {
     birthday: string,
   }
 
-  function cleanInputs() {
+  const handleCustomerDeleteOnClick = (customer: CustomerProps) => {
+    alertHandleToggle();
+    setAlertCustomerName(customer.name)
+    setAlertCustomerId(customer.id)
+  };
+
+  const alertHandleToggle = () => {
+    setAlertToggle(prev => !prev);
+  };
+
+  const alertHandleCancelDelete = () => {
+    setAlertToggle(false)
+    setAlertCustomerName("")
+    setAlertCustomerId("")
+  }
+
+  function cleanInputsOnClick() {
     setId("");
     setName("");
+    setAlertCustomerName("")
+    setAlertCustomerId("")
+    setAlertToggle(false)
     setErrorCpf(false);
     setSearchResult(false);
   }
@@ -40,8 +65,25 @@ function CustomerSearch() {
       console.log(customer);
     }
   }
+
+  async function deleteCustomer(id: string) {
+    await api.delete(`${id}`);
+    setSearchResult(false);
+  }
+
+  const confirmDelete = () => {
+    deleteCustomer(alertCustomerId);
+    alertHandleToggle()
+  }
+
   return (
     <>
+      <CustomAlert
+        alertWarning={alertToggle}
+        customerName={alertCustomerName}
+        alertHandleConfirm={confirmDelete}
+        alertHandleCancel={alertHandleCancelDelete}
+      />
       <Title>
         Pesquisar Cliente
       </Title>
@@ -104,7 +146,7 @@ function CustomerSearch() {
               Pesquisar
             </Button>
             <Button
-              onClick={cleanInputs}
+              onClick={cleanInputsOnClick}
               startIcon={<DeleteOutlineRoundedIcon />}
             >
               Limpar
@@ -124,20 +166,46 @@ function CustomerSearch() {
               <Box
                 key={key}
                 sx={{
-                  paddingBottom: "10px",
+                  paddingBottom: "20px",
                   marginBottom: "10px",
                   borderBottom: "solid 1px #b4b4b4",
                 }}
               >
-                <Typography><strong>ID:</strong> {customer.id}</Typography>
-                <Typography><strong>Nome:</strong> {customer.name}</Typography>
-                <Typography><strong>CPF:</strong> {customer.cpf}</Typography>
-                <Typography><strong>E-Mail:</strong> {customer.email}</Typography>
-                <Typography><strong>Data de Nascimento:</strong> {customer.birthday}</Typography>
+                <Box>
+                  <Typography><strong>ID:</strong> {customer.id}</Typography>
+                  <Typography><strong>Nome:</strong> {customer.name}</Typography>
+                  <Typography><strong>CPF:</strong> {customer.cpf}</Typography>
+                  <Typography><strong>E-Mail:</strong> {customer.email}</Typography>
+                  <Typography><strong>Data de Nascimento:</strong> {customer.birthday}</Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "end",
+                    gap: "10px",
+                    marginTop: "20px",
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    color="success"
+                    startIcon={<EditRoundedIcon />}
+                    onClick={() => alert("edit")}
+                  >
+                    Editar
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={() => handleCustomerDeleteOnClick(customer)}
+                    startIcon={<PersonRemoveRoundedIcon />}
+                  >
+                    Excluir
+                  </Button>
+                </Box>
               </Box>
             );
           })}
-
         </Paper>
       }
     </>
