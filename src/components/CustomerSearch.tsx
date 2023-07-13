@@ -8,11 +8,12 @@ import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import PersonRemoveRoundedIcon from '@mui/icons-material/PersonRemoveRounded';
+import isValidCPF from "../snippets/isValidCpf";
 
 function CustomerSearch() {
   const [id, setId] = useState("");
   const [name, setName] = useState("");
-  const [cpf] = useState("");
+  const [cpf, setCpf] = useState("");
   const [errorCpf, setErrorCpf] = useState(false);
   const [searchResult, setSearchResult] = useState(false);
   const [birthday] = useState("");
@@ -50,20 +51,28 @@ function CustomerSearch() {
   function cleanInputsOnClick() {
     setId("");
     setName("");
+    setCpf("");
     setAlertCustomerName("");
     setAlertCustomerId("");
     setAlertWarn(false);
     setErrorCpf(false);
     setSearchResult(false);
     setAlertSuccess(false);
+    setAlertErrorCpf(false);
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!errorCpf) {
+      setCustomer([]);
+      setAlertErrorCpf(false);
       setSearchResult(true);
-      await api.get(`?name_like=${name}${id ? `&id=${id}` : ""}`)
+      await api.get(`?name_like=${name}${id ? `&id=${id}` : ""}${cpf ? `&cpf=${cpf}` : ""}`)
         .then(resp => setCustomer(resp.data));
+    }
+    else {
+      setErrorMessage("CPF inválido!!");
+      setAlertErrorCpf(true);
     }
   }
 
@@ -81,8 +90,31 @@ function CustomerSearch() {
     }, 3000);
   };
 
+  function handleCpf(maskedCpf: string) {
+    const onlyNumbers = (str: string) => str.replace(/[^0-9]/g, "");
+    setCpf(onlyNumbers(maskedCpf));
+
+    if (maskedCpf.length === 14) {
+      setAlertErrorCpf(false);
+      if (isValidCPF(maskedCpf)) {
+        setErrorCpf(false);
+        setCpf(onlyNumbers(maskedCpf));
+      }
+    }
+    else setErrorCpf(true);
+  }
+  const [alertErrorCpf, setAlertErrorCpf] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   return (
     <>
+      {
+        alertErrorCpf &&
+        <CustomAlert
+          type="error"
+          alertMessage={errorMessage}
+        />
+      }
       {
         alertWarn &&
         <CustomAlert
@@ -136,16 +168,25 @@ function CustomerSearch() {
                 width: "100px",
               }}
             />
+
             <FormInput
-              label="Nome"
-              onChange={e => setName(e.target.value)}
-              value={name}
+              label="CPF"
+              type="cpf"
+              value={cpf}
+              onChange={e => handleCpf(e.target.value)}
+              error={errorCpf}
               required={false}
-              sx={{
-                flexGrow: 3,
-              }}
             />
           </Box>
+          <FormInput
+            label="Nome"
+            onChange={e => setName(e.target.value)}
+            value={name}
+            required={false}
+            sx={{
+              flexGrow: 3,
+            }}
+          />
           <Box
             sx={{
               display: "flex",
