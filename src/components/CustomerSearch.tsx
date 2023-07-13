@@ -146,6 +146,10 @@ function CustomerSearch() {
     setSearchResult(false)
   }
 
+  function maskCpf(Numcpf: string){
+    return Numcpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
+}
+
   return (
     <>
     {
@@ -282,7 +286,7 @@ function CustomerSearch() {
                 <Box>
                   <Typography><strong>ID:</strong> {customer.id}</Typography>
                   <Typography><strong>Nome:</strong> {customer.name}</Typography>
-                  <Typography><strong>CPF:</strong> {customer.cpf}</Typography>
+                  <Typography><strong>CPF:</strong> {maskCpf(customer.cpf)}</Typography>
                   <Typography><strong>E-Mail:</strong> {customer.email}</Typography>
                   <Typography><strong>Data de Nascimento:</strong> {customer.birthday}</Typography>
                 </Box>

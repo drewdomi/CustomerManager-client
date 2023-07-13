@@ -87,9 +87,10 @@ function CustomerEditor({
             position: 'absolute',
             top: '50%',
             left: '50%',
-            maxWidth: "60%",
-            minWidth: "90%",
             height: "70%",
+            width: "90%",
+            maxWidth: "700px",
+            margin: "auto",
             transform: 'translate(-50%, -50%)',
           }}
         >
