@@ -36,13 +36,12 @@ function CustomerEditor({
     event.preventDefault();
     const isValidCpf = await api.get(`?cpf=${cpf}`).then(resp => resp.data);
     if (!errorCpf) {
-      if (isValidCpf.length === 0) {
+      if (isValidCpf.length === 0 || isValidCpf[0].cpf === cpf) {
         await api.put(`${id}`, { name, email, cpf, birthday })
         setAlertToggleOpen(true);
         setTimeout(() => {
           handleModalClose()
         }, 1000)
-
       }
       else {
         setErrorMessage("Cliente já cadastrado");

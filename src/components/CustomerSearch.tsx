@@ -67,7 +67,7 @@ function CustomerSearch() {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setCustomer([]);
-    if (!errorCpf) {
+    if (!errorCpf || cpf.length === 0) {
       setAlertErrorCpf(false);
       await api.get(`?name_like=${name}${id ? `&id=${id}` : ""}${cpf ? `&cpf=${cpf}` : ""}`)
         .then(resp => setCustomer(resp.data));
@@ -107,7 +107,6 @@ function CustomerSearch() {
       }
     }
     else {
-      console.log(maskedCpf)
       setErrorCpf(true);
     }
   }
@@ -131,7 +130,6 @@ function CustomerSearch() {
       cpf: customer.cpf,
       birthday: customer.birthday,
     })
-    console.log(customer)
   }
 
   const handleModalClose = () => {
