@@ -9,6 +9,7 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import PersonRemoveRoundedIcon from '@mui/icons-material/PersonRemoveRounded';
 import isValidCPF from "../snippets/isValidCpf";
+import CustomerEditor from "./CustomerEditor";
 
 function CustomerSearch() {
   const [id, setId] = useState("");
@@ -112,9 +113,46 @@ function CustomerSearch() {
   }
   const [alertErrorCpf, setAlertErrorCpf] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [editorOpen, setEditorOpen] = useState(false);
+  const [customerToEdit, setCustomerToEdit] = useState({
+    id: "",
+    name: "",
+    cpf: "",
+    email: "",
+    birthday: "",
+  })
+
+  const handleEditCustomer = (customer: CustomerProps) => {
+    setEditorOpen(true)
+    setCustomerToEdit({
+      id: customer.id,
+      name: customer.name,
+      email: customer.email,
+      cpf: customer.cpf,
+      birthday: customer.birthday,
+    })
+    console.log(customer)
+  }
+
+  const handleModalClose = () => {
+    setEditorOpen(false)
+    setCustomer([])
+    setSearchResult(false)
+  }
 
   return (
     <>
+    {
+      editorOpen &&
+
+      <CustomerEditor
+        isOpen={editorOpen}
+        handleModalClose={handleModalClose}
+        customer={customerToEdit}
+      />
+
+    }
+
       {
         alertErrorCpf &&
         <CustomAlert
@@ -254,7 +292,7 @@ function CustomerSearch() {
                     variant="contained"
                     color="success"
                     startIcon={<EditRoundedIcon />}
-                    onClick={() => alert("edit")}
+                    onClick={() => handleEditCustomer(customer)}
                   >
                     Editar
                   </Button>
