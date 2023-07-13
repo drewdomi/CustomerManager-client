@@ -39,7 +39,6 @@ Bem-vindo ao nosso repositório do **Customer Manager**! Esta aplicação fornec
 - [x] Layout página de pesquisa do cliente
 - [x] Salvar cadastro de cliente
 - [x] Pesquisar cadastro de cliente
-- [ ] Editar cadastro de cliente
-- [ ] Pesquisar cadastro de cliente
+- [x] Editar cadastro de cliente
 
 Acreditamos que este aplicativo para gerenciamento de clientes simplificará e agilizará muito as operações relacionadas a cadastros de novos clientes no banco de dados e a consulta do mesmo. Sinta-se à vontade para explorar o repositório, contribuir e fornecer feedback para nos ajudar a melhorar ainda mais o aplicativo.
