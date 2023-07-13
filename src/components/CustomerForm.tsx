@@ -84,6 +84,7 @@ function CustomerForm() {
     setEmail("");
     setCpf("");
     setBirthday("");
+    setErrorCpf(false)
   }
 
   return (
