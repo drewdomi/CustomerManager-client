@@ -54,6 +54,7 @@ function CustomerSearch() {
     setCpf("");
     setAlertCustomerName("");
     setAlertCustomerId("");
+    setCustomer([]);
     setAlertWarn(false);
     setErrorCpf(false);
     setSearchResult(false);
@@ -61,18 +62,21 @@ function CustomerSearch() {
     setAlertErrorCpf(false);
   }
 
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setCustomer([]);
     if (!errorCpf) {
-      setCustomer([]);
       setAlertErrorCpf(false);
-      setSearchResult(true);
       await api.get(`?name_like=${name}${id ? `&id=${id}` : ""}${cpf ? `&cpf=${cpf}` : ""}`)
         .then(resp => setCustomer(resp.data));
+      setSearchResult(true);
     }
     else {
+      setSearchResult(false);
       setErrorMessage("CPF inválido!!");
       setAlertErrorCpf(true);
+      setCustomer([]);
     }
   }
 
@@ -93,7 +97,7 @@ function CustomerSearch() {
   function handleCpf(maskedCpf: string) {
     const onlyNumbers = (str: string) => str.replace(/[^0-9]/g, "");
     setCpf(onlyNumbers(maskedCpf));
-
+    
     if (maskedCpf.length === 14) {
       setAlertErrorCpf(false);
       if (isValidCPF(maskedCpf)) {
@@ -101,7 +105,10 @@ function CustomerSearch() {
         setCpf(onlyNumbers(maskedCpf));
       }
     }
-    else setErrorCpf(true);
+    else {
+      console.log(maskedCpf)
+      setErrorCpf(true);
+    }
   }
   const [alertErrorCpf, setAlertErrorCpf] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
