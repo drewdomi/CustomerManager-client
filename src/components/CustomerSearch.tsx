@@ -68,10 +68,18 @@ function CustomerSearch() {
     event.preventDefault();
     setCustomer([]);
     if (!errorCpf || cpf.length === 0) {
+      setErrorCpf(false)
       setAlertErrorCpf(false);
       await api.get(`?name_like=${name}${id ? `&id=${id}` : ""}${cpf ? `&cpf=${cpf}` : ""}`)
-        .then(resp => setCustomer(resp.data));
-      setSearchResult(true);
+        .then(resp => {
+          if(resp.data.length === 0){
+            setErrorMessage("Cliente não existe");
+            setAlertErrorCpf(true);
+            return
+          }
+          setCustomer(resp.data)
+          setSearchResult(true);
+        });
     }
     else {
       setSearchResult(false);
