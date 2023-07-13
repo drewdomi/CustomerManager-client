@@ -10,6 +10,8 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import PersonRemoveRoundedIcon from '@mui/icons-material/PersonRemoveRounded';
 import isValidCPF from "../snippets/isValidCpf";
 import CustomerEditor from "./CustomerEditor";
+import maskCpf from "../snippets/maksCpf";
+import maskDate from "../snippets/maskDate";
 
 function CustomerSearch() {
   const [id, setId] = useState("");
@@ -145,10 +147,6 @@ function CustomerSearch() {
     setCustomer([])
     setSearchResult(false)
   }
-
-  function maskCpf(Numcpf: string){
-    return Numcpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
-}
 
   return (
     <>
@@ -288,7 +286,7 @@ function CustomerSearch() {
                   <Typography><strong>Nome:</strong> {customer.name}</Typography>
                   <Typography><strong>CPF:</strong> {maskCpf(customer.cpf)}</Typography>
                   <Typography><strong>E-Mail:</strong> {customer.email}</Typography>
-                  <Typography><strong>Data de Nascimento:</strong> {customer.birthday}</Typography>
+                  <Typography><strong>Data de Nascimento:</strong> {maskDate(customer.birthday)}</Typography>
                 </Box>
                 <Box
                   sx={{
