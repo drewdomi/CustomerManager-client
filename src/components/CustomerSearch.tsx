@@ -70,17 +70,23 @@ function CustomerSearch() {
     event.preventDefault();
     setCustomer([]);
     if (!errorCpf || cpf.length === 0) {
-      setErrorCpf(false)
+      setErrorCpf(false);
       setAlertErrorCpf(false);
       await api.get(`?name_like=${name}${id ? `&id=${id}` : ""}${cpf ? `&cpf=${cpf}` : ""}`)
         .then(resp => {
-          if(resp.data.length === 0){
+          if (resp.data.length === 0) {
             setErrorMessage("Cliente não existe");
             setAlertErrorCpf(true);
-            return
+            return;
           }
-          setCustomer(resp.data)
+          setCustomer(resp.data);
           setSearchResult(true);
+        })
+        .catch(error => {
+          if (error.code === "ERR_NETWORK") {
+            setAlertErrorCpf(true);
+            setErrorMessage("Error no Servidor");
+          }
         });
     }
     else {
@@ -92,7 +98,13 @@ function CustomerSearch() {
   }
 
   async function deleteCustomer(id: string) {
-    await api.delete(`${id}`);
+    await api.delete(`${id}`)
+      .catch(error => {
+        if (error.code === "ERR_NETWORK") {
+          setAlertErrorCpf(true);
+          setErrorMessage("Error no Servidor");
+        }
+      });
     setSearchResult(false);
   }
 
@@ -108,7 +120,7 @@ function CustomerSearch() {
   function handleCpf(maskedCpf: string) {
     const onlyNumbers = (str: string) => str.replace(/[^0-9]/g, "");
     setCpf(onlyNumbers(maskedCpf));
-    
+
     if (maskedCpf.length === 14) {
       setAlertErrorCpf(false);
       if (isValidCPF(maskedCpf)) {
@@ -129,37 +141,37 @@ function CustomerSearch() {
     cpf: "",
     email: "",
     birthday: "",
-  })
+  });
 
   const handleEditCustomer = (customer: CustomerProps) => {
-    setEditorOpen(true)
+    setEditorOpen(true);
     setCustomerToEdit({
       id: customer.id,
       name: customer.name,
       email: customer.email,
       cpf: customer.cpf,
       birthday: customer.birthday,
-    })
-  }
+    });
+  };
 
   const handleModalClose = () => {
-    setEditorOpen(false)
-    setCustomer([])
-    setSearchResult(false)
-  }
+    setEditorOpen(false);
+    setCustomer([]);
+    setSearchResult(false);
+  };
 
   return (
     <>
-    {
-      editorOpen &&
+      {
+        editorOpen &&
 
-      <CustomerEditor
-        isOpen={editorOpen}
-        handleModalClose={handleModalClose}
-        customer={customerToEdit}
-      />
+        <CustomerEditor
+          isOpen={editorOpen}
+          handleModalClose={handleModalClose}
+          customer={customerToEdit}
+        />
 
-    }
+      }
 
       {
         alertErrorCpf &&
