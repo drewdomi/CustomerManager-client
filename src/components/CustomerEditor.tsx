@@ -25,7 +25,7 @@ function CustomerEditor({
   handleModalClose,
   customer,
 }: ModalProps) {
-  const [id, setId] = useState(customer.id);
+  const [id] = useState(customer.id);
   const [errorCpf, setErrorCpf] = useState(false);
   const [name, setName] = useState(customer.name);
   const [cpf, setCpf] = useState(customer.cpf);
@@ -37,27 +37,22 @@ function CustomerEditor({
     const isValidCpf = await api.get(`?cpf=${cpf}`).then(resp => resp.data);
     if (!errorCpf) {
       if (isValidCpf.length === 0) {
-        alertHandleToggle();
         await api.put(`${id}`, { name, email, cpf, birthday })
-        cleanInputs();
+        setAlertToggleOpen(true);
+        setTimeout(() => {
+          handleModalClose()
+        }, 1000)
+
       }
       else {
-        setErrorCpfMessage("Cliente já cadastrado");
-        alertHandleErrorCpf();
+        setErrorMessage("Cliente já cadastrado");
+        setAlertError(true);
       }
     }
     else {
-      setErrorCpfMessage("CPF Inválido");
-      alertHandleErrorCpf();
+      setErrorMessage("CPF Inválido");
+      setAlertError(true);
     }
-  }
-
-  function cleanInputs() {
-    setId("");
-    setName("");
-    setEmail("");
-    setCpf("");
-    setBirthday("");
   }
 
   function handleCpf(maskedCpf: string) {
@@ -66,6 +61,7 @@ function CustomerEditor({
 
     if (maskedCpf.length === 14) {
       if (isValidCPF(maskedCpf)) {
+        setAlertError(false)
         setErrorCpf(false);
         setCpf(onlyNumbers(maskedCpf));
       }
@@ -73,23 +69,9 @@ function CustomerEditor({
     else setErrorCpf(true);
   }
 
-  const alertHandleErrorCpf = () => {
-    setAlertErrorCpf(prev => !prev);
-    setTimeout(() => {
-      setAlertErrorCpf(false);
-    }, 4000);
-  };
-
-  const alertHandleToggle = () => {
-    setAlertToggleOpen(prev => !prev);
-    setTimeout(() => {
-      setAlertToggleOpen(false);
-    }, 4000);
-  };
-
   const [alertToggleOpen, setAlertToggleOpen] = useState(false);
-  const [alertErrorCpf, setAlertErrorCpf] = useState(false);
-  const [errorCpfMessage, setErrorCpfMessage] = useState("");
+  const [alertError, setAlertError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   return (
     <>
@@ -106,7 +88,8 @@ function CustomerEditor({
             position: 'absolute',
             top: '50%',
             left: '50%',
-            width: "90%",
+            maxWidth: "60%",
+            minWidth: "90%",
             height: "70%",
             transform: 'translate(-50%, -50%)',
           }}
@@ -122,14 +105,14 @@ function CustomerEditor({
             {
               alertToggleOpen &&
               <CustomAlert
-                alertMessage="Cliente cadastrado com sucesso!!"
+                alertMessage="Cliente Alterado!!"
                 type="success"
               />
             }
             {
-              alertErrorCpf &&
+              alertError &&
               <CustomAlert
-                alertMessage={errorCpfMessage}
+                alertMessage={errorMessage}
                 type="error"
               />
             }
@@ -190,7 +173,7 @@ function CustomerEditor({
               >Salvar
               </Button>
               <Button
-                onClick={cleanInputs}
+                onClick={handleModalClose}
                 startIcon={<CloseRoundedIcon />}
               >Fechar
               </Button>
