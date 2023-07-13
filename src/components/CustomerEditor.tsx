@@ -1,7 +1,7 @@
 import Modal from '@mui/material/Modal';
 import { Box, Button, FormControl, Paper } from '@mui/material';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
-import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { useState } from 'react';
 import FormInput from './FormInput';
 import isValidCPF from '../snippets/isValidCpf';
@@ -38,17 +38,15 @@ function CustomerEditor({
     if (!errorCpf) {
       if (isValidCpf.length === 0) {
         alertHandleToggle();
-        await api.put(`${id}`, { name, email, cpf, birthday });
+        await api.put(`${id}`, { name, email, cpf, birthday })
         cleanInputs();
       }
       else {
-        console.log("Cliente já cadastrado")
         setErrorCpfMessage("Cliente já cadastrado");
         alertHandleErrorCpf();
       }
     }
     else {
-      console.log("CPF Inválido")
       setErrorCpfMessage("CPF Inválido");
       alertHandleErrorCpf();
     }
@@ -94,21 +92,7 @@ function CustomerEditor({
   const [errorCpfMessage, setErrorCpfMessage] = useState("");
 
   return (
-    <div>
-      {
-        alertToggleOpen &&
-        <CustomAlert
-          alertMessage="Cliente cadastrado com sucesso!!"
-          type="success"
-        />
-      }
-      {
-        alertErrorCpf &&
-        <CustomAlert
-        alertMessage={errorCpfMessage}
-        type="error"
-        />
-      }
+    <>
       <Modal
         open={isOpen}
         onClose={handleModalClose}
@@ -118,90 +102,103 @@ function CustomerEditor({
         <Paper
           elevation={2}
           sx={{
-            padding: "15px",
+            padding: "20px 15px 0",
             position: 'absolute',
             top: '50%',
             left: '50%',
             width: "90%",
-            height: "100%",
+            height: "70%",
             transform: 'translate(-50%, -50%)',
-            bgcolor: 'background.paper',
-            borderRadius: "20px",
-            p: 4,
           }}
         >
-          <Paper
-            elevation={2}
+          <Box
             sx={{
-              padding: "15px",
+              position: "absolute",
+              bottom: "20px",
+              width: "calc(100% - 29px)",
+              
             }}
           >
-            <FormControl
-              component="form"
-              autoComplete="off"
-              onSubmit={handleSubmit}
+            {
+              alertToggleOpen &&
+              <CustomAlert
+                alertMessage="Cliente cadastrado com sucesso!!"
+                type="success"
+              />
+            }
+            {
+              alertErrorCpf &&
+              <CustomAlert
+                alertMessage={errorCpfMessage}
+                type="error"
+              />
+            }
+          </Box>
+          <FormControl
+            component="form"
+            autoComplete="off"
+            onSubmit={handleSubmit}
+            sx={{
+              display: "flex",
+              gap: "10px",
+            }}
+          >
+            <FormInput
+              label="Nome"
+              onChange={e => setName(e.target.value)}
+              value={name}
+            />
+            <FormInput
+              label="E-Mail"
+              type="email"
+              onChange={e => setEmail(e.target.value)}
+              value={email}
+            />
+            <Box
               sx={{
                 display: "flex",
+                flexWrap: "wrap",
                 gap: "10px",
               }}
             >
               <FormInput
-                label="Nome"
-                onChange={e => setName(e.target.value)}
-                value={name}
+                label="CPF"
+                type="cpf"
+                onChange={e => handleCpf(e.target.value)}
+                error={errorCpf}
+                value={cpf}
               />
               <FormInput
-                label="E-Mail"
-                type="email"
-                onChange={e => setEmail(e.target.value)}
-                value={email}
+                label="Data de Nascimento"
+                type="date"
+                onChange={e => setBirthday(e.target.value)}
+                value={birthday}
               />
-              <Box
-                sx={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: "10px",
-                }}
-              >
-                <FormInput
-                  label="CPF"
-                  type="cpf"
-                  onChange={e => handleCpf(e.target.value)}
-                  error={errorCpf}
-                  value={cpf}
-                />
-                <FormInput
-                  label="Data de Nascimento"
-                  type="date"
-                  onChange={e => setBirthday(e.target.value)}
-                  value={birthday}
-                />
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "end",
-                  gap: "10px",
-                  marginTop: "10px",
-                }}
-              >
-                <Button
-                  variant="contained"
-                  type="submit"
-                  startIcon={<DoneRoundedIcon />}
-                >Salvar
-                </Button>
-                <Button
-                  onClick={cleanInputs}
-                  startIcon={<DeleteOutlineRoundedIcon />}
-                >Limpar
-                </Button>
-              </Box>
-            </FormControl>
-          </Paper>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "end",
+                gap: "10px",
+                marginTop: "10px",
+              }}
+            >
+              <Button
+                variant="contained"
+                type="submit"
+                startIcon={<DoneRoundedIcon />}
+              >Salvar
+              </Button>
+              <Button
+                onClick={cleanInputs}
+                startIcon={<CloseRoundedIcon />}
+              >Fechar
+              </Button>
+            </Box>
+          </FormControl>
         </Paper>
       </Modal>
-    </div>
+    </>
   );
 }
 
