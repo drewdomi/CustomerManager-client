@@ -9,6 +9,15 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import PersonRemoveRoundedIcon from '@mui/icons-material/PersonRemoveRounded';
 import isValidCPF from "../snippets/isValidCpf";
+import CustomerEditorModal from "./CustomerEditorModal";
+
+export interface CustomerProps {
+  id: string,
+  name: string,
+  cpf: string,
+  email: string,
+  birthday: string,
+}
 
 function CustomerSearch() {
   const [id, setId] = useState("");
@@ -23,14 +32,6 @@ function CustomerSearch() {
   const [alertCustomerId, setAlertCustomerId] = useState("");
   const [alertWarn, setAlertWarn] = useState(false);
   const [alertSuccess, setAlertSuccess] = useState(false);
-
-  interface CustomerProps {
-    id: string,
-    name: string,
-    cpf: string,
-    email: string,
-    birthday: string,
-  }
 
   const handleCustomerDeleteOnClick = (customer: CustomerProps) => {
     alertHandleToggle();
@@ -97,7 +98,7 @@ function CustomerSearch() {
   function handleCpf(maskedCpf: string) {
     const onlyNumbers = (str: string) => str.replace(/[^0-9]/g, "");
     setCpf(onlyNumbers(maskedCpf));
-    
+
     if (maskedCpf.length === 14) {
       setAlertErrorCpf(false);
       if (isValidCPF(maskedCpf)) {
@@ -106,15 +107,32 @@ function CustomerSearch() {
       }
     }
     else {
-      console.log(maskedCpf)
+      console.log(maskedCpf);
       setErrorCpf(true);
     }
   }
   const [alertErrorCpf, setAlertErrorCpf] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setCustomer([])
+    setSearchResult(false)
+  };
+
+  function handleCustomerEditor(customer: CustomerProps) {
+    setIsModalOpen(true);
+    console.log(customer);
+  }
+
   return (
     <>
+      <CustomerEditorModal
+        isOpen={isModalOpen}
+        handleModalClose={handleModalClose}
+      />
       {
         alertErrorCpf &&
         <CustomAlert
@@ -254,7 +272,7 @@ function CustomerSearch() {
                     variant="contained"
                     color="success"
                     startIcon={<EditRoundedIcon />}
-                    onClick={() => alert("edit")}
+                    onClick={() => handleCustomerEditor(customer)}
                   >
                     Editar
                   </Button>

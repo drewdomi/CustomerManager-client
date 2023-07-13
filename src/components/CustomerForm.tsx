@@ -5,7 +5,6 @@ import CustomAlert from './CustomAlert';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import api from '../services/api';
-import Title from './Title';
 import FormInput from './FormInput';
 
 function CustomerForm() {
@@ -90,9 +89,6 @@ function CustomerForm() {
         />
 
       }
-      <Title>
-        Cadastrar Cliente
-      </Title>
       <Paper
         elevation={2}
         sx={{
