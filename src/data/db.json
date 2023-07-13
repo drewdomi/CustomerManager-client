@@ -55,6 +55,13 @@
       "cpf": "15777417060",
       "birthday": "2023-07-04",
       "id": 8
+    },
+    {
+      "name": "Paulo",
+      "email": "paulo@das.com",
+      "cpf": "99274829060",
+      "birthday": "2023-06-01",
+      "id": 9
     }
   ]
 }

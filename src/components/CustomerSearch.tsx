@@ -9,6 +9,9 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import PersonRemoveRoundedIcon from '@mui/icons-material/PersonRemoveRounded';
 import isValidCPF from "../snippets/isValidCpf";
+import CustomerEditor from "./CustomerEditor";
+import maskCpf from "../snippets/maksCpf";
+import maskDate from "../snippets/maskDate";
 
 function CustomerSearch() {
   const [id, setId] = useState("");
@@ -66,11 +69,25 @@ function CustomerSearch() {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setCustomer([]);
-    if (!errorCpf) {
+    if (!errorCpf || cpf.length === 0) {
+      setErrorCpf(false);
       setAlertErrorCpf(false);
       await api.get(`?name_like=${name}${id ? `&id=${id}` : ""}${cpf ? `&cpf=${cpf}` : ""}`)
-        .then(resp => setCustomer(resp.data));
-      setSearchResult(true);
+        .then(resp => {
+          if (resp.data.length === 0) {
+            setErrorMessage("Cliente não existe");
+            setAlertErrorCpf(true);
+            return;
+          }
+          setCustomer(resp.data);
+          setSearchResult(true);
+        })
+        .catch(error => {
+          if (error.code === "ERR_NETWORK") {
+            setAlertErrorCpf(true);
+            setErrorMessage("Error no Servidor");
+          }
+        });
     }
     else {
       setSearchResult(false);
@@ -81,7 +98,13 @@ function CustomerSearch() {
   }
 
   async function deleteCustomer(id: string) {
-    await api.delete(`${id}`);
+    await api.delete(`${id}`)
+      .catch(error => {
+        if (error.code === "ERR_NETWORK") {
+          setAlertErrorCpf(true);
+          setErrorMessage("Error no Servidor");
+        }
+      });
     setSearchResult(false);
   }
 
@@ -97,7 +120,7 @@ function CustomerSearch() {
   function handleCpf(maskedCpf: string) {
     const onlyNumbers = (str: string) => str.replace(/[^0-9]/g, "");
     setCpf(onlyNumbers(maskedCpf));
-    
+
     if (maskedCpf.length === 14) {
       setAlertErrorCpf(false);
       if (isValidCPF(maskedCpf)) {
@@ -106,15 +129,50 @@ function CustomerSearch() {
       }
     }
     else {
-      console.log(maskedCpf)
       setErrorCpf(true);
     }
   }
   const [alertErrorCpf, setAlertErrorCpf] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [editorOpen, setEditorOpen] = useState(false);
+  const [customerToEdit, setCustomerToEdit] = useState({
+    id: "",
+    name: "",
+    cpf: "",
+    email: "",
+    birthday: "",
+  });
+
+  const handleEditCustomer = (customer: CustomerProps) => {
+    setEditorOpen(true);
+    setCustomerToEdit({
+      id: customer.id,
+      name: customer.name,
+      email: customer.email,
+      cpf: customer.cpf,
+      birthday: customer.birthday,
+    });
+  };
+
+  const handleModalClose = () => {
+    setEditorOpen(false);
+    setCustomer([]);
+    setSearchResult(false);
+  };
 
   return (
     <>
+      {
+        editorOpen &&
+
+        <CustomerEditor
+          isOpen={editorOpen}
+          handleModalClose={handleModalClose}
+          customer={customerToEdit}
+        />
+
+      }
+
       {
         alertErrorCpf &&
         <CustomAlert
@@ -238,9 +296,9 @@ function CustomerSearch() {
                 <Box>
                   <Typography><strong>ID:</strong> {customer.id}</Typography>
                   <Typography><strong>Nome:</strong> {customer.name}</Typography>
-                  <Typography><strong>CPF:</strong> {customer.cpf}</Typography>
+                  <Typography><strong>CPF:</strong> {maskCpf(customer.cpf)}</Typography>
                   <Typography><strong>E-Mail:</strong> {customer.email}</Typography>
-                  <Typography><strong>Data de Nascimento:</strong> {customer.birthday}</Typography>
+                  <Typography><strong>Data de Nascimento:</strong> {maskDate(customer.birthday)}</Typography>
                 </Box>
                 <Box
                   sx={{
@@ -254,7 +312,7 @@ function CustomerSearch() {
                     variant="contained"
                     color="success"
                     startIcon={<EditRoundedIcon />}
-                    onClick={() => alert("edit")}
+                    onClick={() => handleEditCustomer(customer)}
                   >
                     Editar
                   </Button>

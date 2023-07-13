@@ -17,11 +17,24 @@ function CustomerForm() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const isValidCpf = await api.get(`?cpf=${cpf}`).then(resp => resp.data);
+    const isValidCpf = await api.get(`?cpf=${cpf}`)
+      .then(resp => resp.data)
+      .catch(error => {
+        if (error.code === "ERR_NETWORK") {
+          alertHandleErrorCpf();
+          setErrorCpfMessage("Error no Servidor");
+        }
+      });
     if (!errorCpf) {
       if (isValidCpf.length === 0) {
         alertHandleToggle();
-        await api.post("", { name, email, cpf, birthday });
+        await api.post("", { name, email, cpf, birthday })
+          .catch(error => {
+            if (error.code === "ERR_NETWORK") {
+              alertHandleErrorCpf();
+              setErrorCpfMessage("Error no Servidor");
+            }
+          });
         cleanInputs();
       }
       else {
@@ -50,7 +63,7 @@ function CustomerForm() {
 
   const [alertToggleOpen, setAlertToggleOpen] = useState(false);
   const [alertErrorCpf, setAlertErrorCpf] = useState(false);
-  const [errorCpfMessage, setErrorCpfMessage] = useState("")
+  const [errorCpfMessage, setErrorCpfMessage] = useState("");
 
   const alertHandleErrorCpf = () => {
     setAlertErrorCpf(prev => !prev);
