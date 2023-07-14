@@ -1,4 +1,5 @@
-![GIF](src/assets/demo.gif)
+![DEMO GIF1](src/assets/demo1.gif)
+![DEMO GIF2](src/assets/demo2.gif)
 
 ## 💭 Oque é esse projeto?
 Bem-vindo ao nosso repositório do **Customer Manager**! Esta aplicação fornece aos usuários uma experiência perfeita para **registrar** e **pesquisar** clientes **de um banco de dados**. Ele foi construído usando tecnologias populares como **React**, **React Router**, **Material UI**.
