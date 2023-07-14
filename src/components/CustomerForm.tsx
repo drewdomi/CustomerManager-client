@@ -152,6 +152,9 @@ function CustomerForm() {
               type="date"
               onChange={e => setBirthday(e.target.value)}
               value={birthday}
+              sx={{
+                width: "50%",
+              }}
             />
           </Box>
           <Box

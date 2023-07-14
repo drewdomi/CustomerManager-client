@@ -52,6 +52,7 @@ function FormInput({
         required = {required}
         value={value}
         sx={{
+          ...sx,
           flexGrow: 1
         }}
       />
