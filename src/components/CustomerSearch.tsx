@@ -10,7 +10,7 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import PersonRemoveRoundedIcon from '@mui/icons-material/PersonRemoveRounded';
 import isValidCPF from "../snippets/isValidCpf";
 import CustomerEditor from "./CustomerEditor";
-import maskCpf from "../snippets/maksCpf";
+import maskCpf from "../snippets/maskCpf";
 import maskDate from "../snippets/maskDate";
 
 function CustomerSearch() {
