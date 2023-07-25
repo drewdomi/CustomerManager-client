@@ -65,29 +65,60 @@ function CustomerSearch() {
     setAlertErrorCpf(false);
   }
 
-
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setCustomer([]);
+    //    setCustomer([]);
+
     if (!errorCpf || cpf.length === 0) {
       setErrorCpf(false);
       setAlertErrorCpf(false);
-      await api.get(`?name_like=${name}${id ? `&id=${id}` : ""}${cpf ? `&cpf=${cpf}` : ""}`)
-        .then(resp => {
-          if (resp.data.length === 0) {
-            setErrorMessage("Cliente não existe");
-            setAlertErrorCpf(true);
-            return;
-          }
-          setCustomer(resp.data);
-          setSearchResult(true);
-        })
-        .catch(error => {
-          if (error.code === "ERR_NETWORK") {
-            setAlertErrorCpf(true);
-            setErrorMessage("Error no Servidor");
-          }
-        });
+
+      if (!id && (name || cpf)) {
+        await api.get(`/find?${name ? `name=${name}` : ""}&${cpf ? `cpf=${cpf}` : ""}`)
+          .then(resp => {
+            if (resp.data.length === 0) {
+              setErrorMessage("Cliente não existe");
+              setAlertErrorCpf(true);
+              return;
+            }
+            setCustomer(resp.data);
+            console.log("PESQUISA SÓ COM NOME OU CPF OU OS DOIS")
+            setSearchResult(true);
+            console.log(resp.data)
+          })
+          .catch(error => {
+            if (error.code === "ERR_NETWORK") {
+              setAlertErrorCpf(true);
+              setErrorMessage("Error no Servidor");
+            }
+          });
+      }
+      if (id) {
+        await api.get(`/${id}`)
+          .then(resp => {
+            if (resp.data.error) {
+              setErrorMessage("Cliente não existe");
+              setAlertErrorCpf(true);
+              console.log(resp.data)
+              return;
+            }
+            else {
+              console.log(resp.data)
+              console.log("PESQUISA SÓ COM ID")
+              setCustomer([resp.data])
+              setSearchResult(true)
+            }
+          })
+      }
+      if (!id && !name && !cpf) {
+        await api.get("")
+          .then(resp => {
+            console.log(resp.data)
+            console.log("PESQUISA SEM PARAMETROS")
+            setCustomer(resp.data)
+            setSearchResult(true)
+          })
+      }
     }
     else {
       setSearchResult(false);
