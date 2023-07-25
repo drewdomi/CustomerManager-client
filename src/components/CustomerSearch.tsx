@@ -8,7 +8,6 @@ import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import PersonRemoveRoundedIcon from '@mui/icons-material/PersonRemoveRounded';
-import PersonAddRoundedIcon from '@mui/icons-material/PersonAddRounded';
 import isValidCPF from "../snippets/isValidCpf";
 import CustomerEditor from "./CustomerEditor";
 import maskCpf from "../snippets/maskCpf";
@@ -196,21 +195,6 @@ function CustomerSearch() {
     setSearchResult(false);
   };
 
-  async function handleResetCustomer(id: string) {
-    const isDeleted = "-"
-    await api.put(`${id}`, { isDeleted })
-      .then(resp => {
-        console.log(resp.data)
-      })
-      .catch(error => {
-        if (error.code === "ERR_NETWORK") {
-          setAlertErrorCpf(true);
-          setErrorMessage("Error no Servidor");
-        }
-      });
-    setSearchResult(false);
-  }
-
   return (
     <>
       {
@@ -359,24 +343,9 @@ function CustomerSearch() {
                         fontWeight: 700,
                         color: "brown"
                       }}
-                    >DELETADO</Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "end",
-                      gap: "10px",
-                      marginTop: "20px",
-                    }}
-                  >
-                    <Button
-                      variant="outlined"
-                      color="warning"
-                      onClick={() => handleResetCustomer(customer.id)}
-                      startIcon={<PersonAddRoundedIcon />}
                     >
-                      Restaurar
-                    </Button>
+                      Inativo
+                    </Typography>
                   </Box>
                 </Box>
               )
