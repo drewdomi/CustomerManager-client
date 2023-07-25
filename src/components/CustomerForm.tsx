@@ -28,14 +28,20 @@ function CustomerForm() {
     if (!errorCpf) {
       if (isValidCpf.length === 0) {
         alertHandleToggle();
-        const maskedBirthday = new Date(birthday).toISOString()
+
+        console.log(name, email, cpf, birthday)
         await api.post("", { name, email, cpf, birthday })
+          .then(resp => {
+            console.log(resp.data)
+          })
           .catch(error => {
+            console.log(error)
             if (error.code === "ERR_NETWORK") {
               alertHandleErrorCpf();
               setErrorCpfMessage("Error no Servidor");
             }
           });
+
         cleanInputs();
       }
       else {
