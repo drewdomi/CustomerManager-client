@@ -10,7 +10,7 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import PersonRemoveRoundedIcon from '@mui/icons-material/PersonRemoveRounded';
 import isValidCPF from "../snippets/isValidCpf";
 import CustomerEditor from "./CustomerEditor";
-import maskCpf from "../snippets/maksCpf";
+import maskCpf from "../snippets/maskCpf";
 import maskDate from "../snippets/maskDate";
 
 function CustomerSearch() {
@@ -33,6 +33,7 @@ function CustomerSearch() {
     cpf: string,
     email: string,
     birthday: string,
+    isDeleted?: string,
   }
 
   const handleCustomerDeleteOnClick = (customer: CustomerProps) => {
@@ -65,29 +66,59 @@ function CustomerSearch() {
     setAlertErrorCpf(false);
   }
 
-
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setCustomer([]);
+
     if (!errorCpf || cpf.length === 0) {
       setErrorCpf(false);
       setAlertErrorCpf(false);
-      await api.get(`?name_like=${name}${id ? `&id=${id}` : ""}${cpf ? `&cpf=${cpf}` : ""}`)
-        .then(resp => {
-          if (resp.data.length === 0) {
-            setErrorMessage("Cliente não existe");
-            setAlertErrorCpf(true);
-            return;
-          }
-          setCustomer(resp.data);
-          setSearchResult(true);
-        })
-        .catch(error => {
-          if (error.code === "ERR_NETWORK") {
-            setAlertErrorCpf(true);
-            setErrorMessage("Error no Servidor");
-          }
-        });
+
+      if (!id && (name || cpf)) {
+        await api.get(`/find?${name ? `name=${name}` : ""}&${cpf ? `cpf=${cpf}` : ""}`)
+          .then(resp => {
+            if (resp.data.length === 0) {
+              setErrorMessage("Cliente não existe");
+              setAlertErrorCpf(true);
+              return;
+            }
+            setCustomer(resp.data);
+            console.log("PESQUISA SÓ COM NOME OU CPF OU OS DOIS")
+            setSearchResult(true);
+            console.log(resp.data)
+          })
+          .catch(error => {
+            if (error.code === "ERR_NETWORK") {
+              setAlertErrorCpf(true);
+              setErrorMessage("Error no Servidor");
+            }
+          });
+      }
+      if (id) {
+        await api.get(`/${id}`)
+          .then(resp => {
+            if (resp.data.error) {
+              setErrorMessage("Cliente não existe");
+              setAlertErrorCpf(true);
+              console.log(resp.data)
+              return;
+            }
+            else {
+              console.log(resp.data)
+              console.log("PESQUISA SÓ COM ID")
+              setCustomer([resp.data])
+              setSearchResult(true)
+            }
+          })
+      }
+      if (!id && !name && !cpf) {
+        await api.get("")
+          .then(resp => {
+            console.log(resp.data)
+            console.log("PESQUISA SEM PARAMETROS")
+            setCustomer(resp.data)
+            setSearchResult(true)
+          })
+      }
     }
     else {
       setSearchResult(false);
@@ -98,7 +129,11 @@ function CustomerSearch() {
   }
 
   async function deleteCustomer(id: string) {
-    await api.delete(`${id}`)
+    const isDeleted = "*"
+    await api.put(`${id}`, { isDeleted })
+      .then(resp => {
+        console.log(resp.data)
+      })
       .catch(error => {
         if (error.code === "ERR_NETWORK") {
           setAlertErrorCpf(true);
@@ -279,54 +314,57 @@ function CustomerSearch() {
       {searchResult &&
         <Paper
           elevation={2}
-          sx={{
-            padding: "15px",
-          }}
         >
           {customer.map((customer, key) => {
-            return (
-              <Box
-                key={key}
-                sx={{
-                  paddingBottom: "20px",
-                  marginBottom: "10px",
-                  borderBottom: "solid 1px #b4b4b4",
-                }}
-              >
-                <Box>
-                  <Typography><strong>ID:</strong> {customer.id}</Typography>
-                  <Typography><strong>Nome:</strong> {customer.name}</Typography>
-                  <Typography><strong>CPF:</strong> {maskCpf(customer.cpf)}</Typography>
-                  <Typography><strong>E-Mail:</strong> {customer.email}</Typography>
-                  <Typography><strong>Data de Nascimento:</strong> {maskDate(customer.birthday)}</Typography>
-                </Box>
+
+            if (customer.isDeleted === "*") {
+              return
+            }
+            else {
+
+              return (
                 <Box
+                  key={key}
                   sx={{
-                    display: "flex",
-                    justifyContent: "end",
-                    gap: "10px",
-                    marginTop: "20px",
+                    padding: "20px",
+                    borderBottom: "solid 1px #b4b4b4",
                   }}
                 >
-                  <Button
-                    variant="contained"
-                    color="success"
-                    startIcon={<EditRoundedIcon />}
-                    onClick={() => handleEditCustomer(customer)}
+                  <Box>
+                    <Typography><strong>ID:</strong> {customer.id}</Typography>
+                    <Typography><strong>Nome:</strong> {customer.name}</Typography>
+                    <Typography><strong>CPF:</strong> {maskCpf(customer.cpf)}</Typography>
+                    <Typography><strong>E-Mail:</strong> {customer.email}</Typography>
+                    <Typography><strong>Data de Nascimento:</strong> {maskDate(customer.birthday)}</Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "end",
+                      gap: "10px",
+                      marginTop: "20px",
+                    }}
                   >
-                    Editar
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    color="error"
-                    onClick={() => handleCustomerDeleteOnClick(customer)}
-                    startIcon={<PersonRemoveRoundedIcon />}
-                  >
-                    Excluir
-                  </Button>
+                    <Button
+                      variant="contained"
+                      color="success"
+                      startIcon={<EditRoundedIcon />}
+                      onClick={() => handleEditCustomer(customer)}
+                    >
+                      Editar
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      onClick={() => handleCustomerDeleteOnClick(customer)}
+                      startIcon={<PersonRemoveRoundedIcon />}
+                    >
+                      Excluir
+                    </Button>
+                  </Box>
                 </Box>
-              </Box>
-            );
+              );
+            }
           })}
         </Paper>
       }

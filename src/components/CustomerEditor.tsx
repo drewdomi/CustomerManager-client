@@ -4,9 +4,9 @@ import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { useState } from 'react';
 import FormInput from './FormInput';
-import isValidCPF from '../snippets/isValidCpf';
 import api from '../services/api';
 import CustomAlert from './CustomAlert';
+import maskCpf from '../snippets/maskCpf';
 
 type ModalProps = {
   isOpen: boolean,
@@ -26,18 +26,19 @@ function CustomerEditor({
   customer,
 }: ModalProps) {
   const [id] = useState(customer.id);
-  const [errorCpf, setErrorCpf] = useState(false);
+  const [errorCpf] = useState(false);
   const [name, setName] = useState(customer.name);
-  const [cpf, setCpf] = useState(customer.cpf);
+  const [cpf] = useState(customer.cpf);
   const [email, setEmail] = useState(customer.email);
   const [birthday, setBirthday] = useState(customer.birthday);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const isValidCpf = await api.get(`?cpf=${cpf}`).then(resp => resp.data);
+    const isValidCpf = await api.get(`find?cpf=${cpf}`).then(resp => resp.data);
     if (!errorCpf) {
       if (isValidCpf.length === 0 || isValidCpf[0].cpf === cpf) {
-        await api.put(`${id}`, { name, email, cpf, birthday })
+        await api.put(`/${id}`, { name, email, birthday })
+          .then(resp => console.log(resp.data))
         setAlertToggleOpen(true);
         setTimeout(() => {
           handleModalClose()
@@ -52,20 +53,6 @@ function CustomerEditor({
       setErrorMessage("CPF Inválido");
       setAlertError(true);
     }
-  }
-
-  function handleCpf(maskedCpf: string) {
-    const onlyNumbers = (str: string) => str.replace(/[^0-9]/g, "");
-    setCpf(onlyNumbers(maskedCpf));
-
-    if (maskedCpf.length === 14) {
-      if (isValidCPF(maskedCpf)) {
-        setAlertError(false)
-        setErrorCpf(false);
-        setCpf(onlyNumbers(maskedCpf));
-      }
-    }
-    else setErrorCpf(true);
   }
 
   const [alertToggleOpen, setAlertToggleOpen] = useState(false);
@@ -99,7 +86,7 @@ function CustomerEditor({
               position: "absolute",
               bottom: "20px",
               width: "calc(100% - 29px)",
-              
+
             }}
           >
             {
@@ -130,12 +117,14 @@ function CustomerEditor({
               label="Nome"
               onChange={e => setName(e.target.value)}
               value={name}
+              required={false}
             />
             <FormInput
               label="E-Mail"
               type="email"
               onChange={e => setEmail(e.target.value)}
               value={email}
+              required={false}
             />
             <Box
               sx={{
@@ -146,16 +135,16 @@ function CustomerEditor({
             >
               <FormInput
                 label="CPF"
-                type="cpf"
-                onChange={e => handleCpf(e.target.value)}
-                error={errorCpf}
-                value={cpf}
+                value={maskCpf(cpf)}
+                required={false}
+                disabled
               />
               <FormInput
                 label="Data de Nascimento"
                 type="date"
                 onChange={e => setBirthday(e.target.value)}
                 value={birthday}
+                required={false}
               />
             </Box>
             <Box

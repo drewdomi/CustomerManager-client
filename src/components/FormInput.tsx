@@ -9,6 +9,7 @@ type FormInputProps = {
   sx?: object,
   required?: boolean,
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  disabled?: boolean,
 };
 
 function FormInput({
@@ -19,7 +20,8 @@ function FormInput({
   sx,
   required = true,
   onChange,
-  }: FormInputProps) {
+  disabled = false,
+}: FormInputProps) {
   if (type === "cpf") {
     return (
       <InputMask
@@ -49,7 +51,7 @@ function FormInput({
         size="small"
         onChange={onChange}
         type={type}
-        required = {required}
+        required={required}
         value={value}
         sx={{
           ...sx,
@@ -74,8 +76,8 @@ function FormInput({
       />
     );
   }
-  if(type === "id"){
-    return(
+  if (type === "id") {
+    return (
       <InputMask
         mask="9999999"
         maskPlaceholder=""
@@ -103,7 +105,8 @@ function FormInput({
       type={type}
       error={error}
       value={value}
-      required = {required}
+      required={required}
+      disabled={disabled}
       sx={{
         ...sx
       }}
