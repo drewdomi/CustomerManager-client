@@ -318,37 +318,7 @@ function CustomerSearch() {
           {customer.map((customer, key) => {
 
             if (customer.isDeleted === "*") {
-              return (
-                <Box
-                  key={key}
-                  sx={{
-                    padding: "15px 20px",
-                    marginBottom: "10px",
-                    borderBottom: "solid 1px #b4b4b4",
-                    backgroundColor: "#eeeeee",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      fontColor: "dimgray",
-                    }}
-                  >
-                    <Typography><strong>ID:</strong> {customer.id}</Typography>
-                    <Typography><strong>Nome:</strong> {customer.name}</Typography>
-                    <Typography><strong>CPF:</strong> {maskCpf(customer.cpf)}</Typography>
-                    <Typography><strong>E-Mail:</strong> {customer.email}</Typography>
-                    <Typography><strong>Data de Nascimento:</strong> {maskDate(customer.birthday)}</Typography>
-                    <Typography
-                      sx={{
-                        fontWeight: 700,
-                        color: "brown"
-                      }}
-                    >
-                      Inativo
-                    </Typography>
-                  </Box>
-                </Box>
-              )
+              return
             }
             else {
 
@@ -356,8 +326,7 @@ function CustomerSearch() {
                 <Box
                   key={key}
                   sx={{
-                    padding: "15px 20px",
-                    marginBottom: "10px",
+                    padding: "20px",
                     borderBottom: "solid 1px #b4b4b4",
                   }}
                 >
