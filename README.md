@@ -2,15 +2,14 @@
 ![DEMO GIF2](src/assets/demo2.gif)
 
 ## 💭 Oque é esse projeto?
-Bem-vindo ao nosso repositório do **Customer Manager**! Esta aplicação fornece aos usuários uma experiência perfeita para **registrar** e **pesquisar** clientes **de um banco de dados**. Ele foi construído usando tecnologias populares como **React**, **React Router**, **Material UI**.
+Bem-vindo ao repositório do **Customer Manager**! Esta aplicação fornece aos usuários uma experiência perfeita para **registrar** e **pesquisar** clientes **de um banco de dados**. Ele foi construído usando tecnologias populares como **React**, **React Router**, **Material UI**.
 
 ## 🔥 Como rodar esse projeto?
 - Primeiro baixe o repositório (seja pelas por `git clone` ou através de um arquivo .zip pelo Github).
-- Com o projeto já **baixado** e descompactado entre na pasta e **rode o comando** `npm install` ou `yarn` para baixar e instalar todas as dependencias!!
+- Com o projeto já **baixado** e descompactado entre na pasta e **rode o comando** `npm install` para baixar e instalar todas as dependencias!!
 - Agora dê o comando `npm run dev` ou `yarn dev` para iniciar o Front-End do projeto.
-- Depois o comando `npm run server` para iniciar o Json-Server e a API.
 - O projeto estará disponível para acesso apartir de um link mais ou menos assim `http://127.0.0.1:5173/`.
-- Pronto agora e só inserir os clientes e pesquisar acessando pela barra lateral ou usando a ULR `http://127.0.0.1:5173/search`
+- Pronto agora e só conectar com a API [link](https://github.com/drewdomi/CustomerManager-server)
 
 ## 💡 Características principais:
 
@@ -30,8 +29,6 @@ Bem-vindo ao nosso repositório do **Customer Manager**! Esta aplicação fornec
 - **Material UI**: Uma biblioteca de componentes de UI que oferece componentes pré-estilizados e prontos para uso e customizações, garantindo um design moderno e visualmente agradável.
 
 - **TypeScript**: Um supersest JavaScript que adiciona recursos de tipagem estática e outros recursos avançados para melhorar a produtividade e a qualidade do código. Ele nos ajuda a evitar erros comuns e oferece um ambiente de desenvolvimento mais robusto.
-
-- **Json-Server**: uma solução de servidor de API simulada durante o desenvolvimento do projeto. O Json-Server nos permite criar rapidamente uma API REST simulada com dados armazenados em arquivos JSON. Isso é útil para desenvolver e testar o front-end antes de ter um back-end totalmente funcional.
 
 ## ✅ Todos
 
