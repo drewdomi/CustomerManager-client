@@ -31,7 +31,6 @@ Bem-vindo ao repositório do **Customer Manager**! Esta aplicação fornece aos 
 - **TypeScript**: Um supersest JavaScript que adiciona recursos de tipagem estática e outros recursos avançados para melhorar a produtividade e a qualidade do código. Ele nos ajuda a evitar erros comuns e oferece um ambiente de desenvolvimento mais robusto.
 
 ## ✅ Todos
-
 - [x] Adicionar Rotas
 - [x] Layout página de cadastro do cliente
 - [x] Layout página de pesquisa do cliente
