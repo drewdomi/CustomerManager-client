@@ -25,6 +25,10 @@
   "include": [
     "src"
   ],
+  "types": [
+    "vite/client",
+    "vitest/globals",
+  ],
   "references": [
     {
       "path": "./tsconfig.node.json"
