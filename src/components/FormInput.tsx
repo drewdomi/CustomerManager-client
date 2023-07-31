@@ -39,6 +39,7 @@ function FormInput({
           sx={{
             flexGrow: 1
           }}
+          
         />
       </InputMask>
     );
@@ -73,6 +74,7 @@ function FormInput({
           flexGrow: 1,
           ...sx
         }}
+        inputProps={{ maxLength: 60 }}
       />
     );
   }
@@ -110,6 +112,7 @@ function FormInput({
       sx={{
         ...sx
       }}
+      inputProps={{ maxLength: 60 }}
     />
   );
 }
