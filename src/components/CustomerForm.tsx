@@ -6,7 +6,16 @@ import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import api from '../services/api';
 import Title from './Title';
-import FormInput from './FormInput';
+
+import { useForm, SubmitHandler,} from "react-hook-form";
+import CustomInput from './CustomInput';
+
+export type InputValues = {
+  name: string;
+  cpf: string;
+  email: string;
+  birthday: string;
+};
 
 function CustomerForm() {
   const [name, setName] = useState("");
@@ -15,58 +24,64 @@ function CustomerForm() {
   const [birthday, setBirthday] = useState("");
   const [email, setEmail] = useState("");
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const isValidCpf = await api.get(`/find?cpf=${cpf}`)
-      .then(resp => resp.data)
-      .catch(error => {
-        if (error.code === "ERR_NETWORK") {
-          alertHandleErrorCpf();
-          setErrorCpfMessage("Error no Servidor");
-        }
-      });
-    if (!errorCpf) {
-      if (isValidCpf.length === 0) {
-        alertHandleToggle();
+  const { handleSubmit, control } = useForm<InputValues>();
+  const onSubmit: SubmitHandler<InputValues> = (data, event) => {
+    event?.preventDefault();
+    console.log(data);
+  };
 
-        console.log(name, email, cpf, birthday)
-        await api.post("", { name, email, cpf, birthday })
-          .then(resp => {
-            console.log(resp.data)
-          })
-          .catch(error => {
-            console.log(error)
-            if (error.code === "ERR_NETWORK") {
-              alertHandleErrorCpf();
-              setErrorCpfMessage("Error no Servidor");
-            }
-          });
+  // async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  //   event.preventDefault();
+  //   const isValidCpf = await api.get(`/find?cpf=${cpf}`)
+  //     .then(resp => resp.data)
+  //     .catch(error => {
+  //       if (error.code === "ERR_NETWORK") {
+  //         alertHandleErrorCpf();
+  //         setErrorCpfMessage("Error no Servidor");
+  //       }
+  //     });
+  //   if (!errorCpf) {
+  //     if (isValidCpf.length === 0) {
+  //       alertHandleToggle();
 
-        cleanInputs();
-      }
-      else {
-        setErrorCpfMessage("Cliente já cadastrado");
-        alertHandleErrorCpf();
-      }
-    }
-    else {
-      setErrorCpfMessage("CPF Inválido");
-      alertHandleErrorCpf();
-    }
-  }
+  //       console.log(name, email, cpf, birthday)
+  //       await api.post("", { name, email, cpf, birthday })
+  //         .then(resp => {
+  //           console.log(resp.data)
+  //         })
+  //         .catch(error => {
+  //           console.log(error)
+  //           if (error.code === "ERR_NETWORK") {
+  //             alertHandleErrorCpf();
+  //             setErrorCpfMessage("Error no Servidor");
+  //           }
+  //         });
 
-  function handleCpf(maskedCpf: string) {
-    const onlyNumbers = (str: string) => str.replace(/[^0-9]/g, "");
-    setCpf(onlyNumbers(maskedCpf));
+  //       cleanInputs();
+  //     }
+  //     else {
+  //       setErrorCpfMessage("Cliente já cadastrado");
+  //       alertHandleErrorCpf();
+  //     }
+  //   }
+  //   else {
+  //     setErrorCpfMessage("CPF Inválido");
+  //     alertHandleErrorCpf();
+  //   }
+  // }
 
-    if (maskedCpf.length === 14) {
-      if (isValidCPF(maskedCpf)) {
-        setErrorCpf(false);
-        setCpf(onlyNumbers(maskedCpf));
-      }
-    }
-    else setErrorCpf(true);
-  }
+  // function handleCpf(maskedCpf: string) {
+  //   const onlyNumbers = (str: string) => str.replace(/[^0-9]/g, "");
+  //   setCpf(onlyNumbers(maskedCpf));
+
+  //   if (maskedCpf.length === 14) {
+  //     if (isValidCPF(maskedCpf)) {
+  //       setErrorCpf(false);
+  //       setCpf(onlyNumbers(maskedCpf));
+  //     }
+  //   }
+  //   else setErrorCpf(true);
+  // }
 
   const [alertToggleOpen, setAlertToggleOpen] = useState(false);
   const [alertErrorCpf, setAlertErrorCpf] = useState(false);
@@ -123,22 +138,21 @@ function CustomerForm() {
         <FormControl
           component="form"
           autoComplete="off"
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           sx={{
             display: "flex",
             gap: "10px",
           }}
         >
-          <FormInput
+          <CustomInput
+            control={control}
+            name="name"
             label="Nome"
-            onChange={e => setName(e.target.value)}
-            value={name}
           />
-          <FormInput
+          <CustomInput
+            control={control}
+            name="email"
             label="E-Mail"
-            type="email"
-            onChange={e => setEmail(e.target.value)}
-            value={email}
           />
           <Box
             sx={{
@@ -147,7 +161,7 @@ function CustomerForm() {
               gap: "10px",
             }}
           >
-            <FormInput
+            {/* <FormInput
               label="CPF"
               type="cpf"
               onChange={e => handleCpf(e.target.value)}
@@ -162,7 +176,7 @@ function CustomerForm() {
               sx={{
                 width: "50%",
               }}
-            />
+            /> */}
           </Box>
           <Box
             sx={{
