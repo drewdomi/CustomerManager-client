@@ -1,15 +1,13 @@
 import { Paper, Button, FormControl, Box } from "@mui/material";
-// import isValidCPF from '../snippets/isValidCpf';
-// import CustomAlert from './CustomAlert';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
-// import api from '../services/api';
 import Title from '../components/Title';
-
 import { useForm, SubmitHandler } from "react-hook-form";
 import CustomInput from '../components/CustomInput';
 import api from "../services/api";
 import { unMaskCpf } from "../snippets/handleData";
+import CustomAlert, { AlertType } from "../components/CustomAlert";
+import { useState } from "react";
 
 export type InputValues = {
   name: string;
@@ -21,15 +19,27 @@ export type InputValues = {
 function RegisterCustomer() {
 
   const { handleSubmit, control, reset } = useForm<InputValues>();
+  const [alert, setAlert] = useState<{ type: AlertType; message: string; } | null>(null);
+
+  const showCustomAlert = (type: AlertType, message: string) => {
+    setAlert({ type, message });
+    setTimeout(() => {
+      setAlert(null);
+    }, 5000);
+  };
+
+  const resetForm = () => {
+    showCustomAlert('success', 'Formulário limpo.');
+    reset();
+  };
 
   const onSubmit: SubmitHandler<InputValues> = async (data, event) => {
     event?.preventDefault();
-    // console.log(data);
 
     const isValidDoc = await api.get(`verify-cpf/${data.cpf}`).then(res => res.data);
 
     if (!isValidDoc) {
-      console.log("CPF inválido");
+      showCustomAlert("error", "CPF inválido");
       return;
     }
 
@@ -39,89 +49,27 @@ function RegisterCustomer() {
         console.log(error, "Error no Servidor");
       });
 
-    if (isCpfRegisted.length !== 0) console.log("Cliente já cadastrado");
-      else {
+    if (isCpfRegisted.length !== 0) showCustomAlert("error", "Cliente já cadastrado");
+    else {
       await api.post("customers", data)
-        .then(() => reset())
+        .then(() => {
+          showCustomAlert("success", "Cliente cadastrado com sucesso");
+          reset();
+        })
         .catch(error => {
           console.log(error, "Error no Servidor");
-        });      
+        });
     }
   };
 
-  // async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-  //   event.preventDefault();
-  //   const isValidCpf = await api.get(`/find?cpf=${cpf}`)
-  //     .then(resp => resp.data)
-  //     .catch(error => {
-  //       if (error.code === "ERR_NETWORK") {
-  //         alertHandleErrorCpf();
-  //         setErrorCpfMessage("Error no Servidor");
-  //       }
-  //     });
-  //   if (!errorCpf) {
-  //     if (isValidCpf.length === 0) {
-  //       alertHandleToggle();
-
-  //       console.log(name, email, cpf, birthday)
-  //       await api.post("", { name, email, cpf, birthday })
-  //         .then(resp => {
-  //           console.log(resp.data)
-  //         })
-  //         .catch(error => {
-  //           console.log(error)
-  //           if (error.code === "ERR_NETWORK") {
-  //             alertHandleErrorCpf();
-  //             setErrorCpfMessage("Error no Servidor");
-  //           }
-  //         });
-
-  //       cleanInputs();
-  //     }
-  //     else {
-  //       setErrorCpfMessage("Cliente já cadastrado");
-  //       alertHandleErrorCpf();
-  //     }
-  //   }
-  //   else {
-  //     setErrorCpfMessage("CPF Inválido");
-  //     alertHandleErrorCpf();
-  //   }
-  // }
-
-  // function handleCpf(maskedCpf: string) {
-  //   const onlyNumbers = (str: string) => str.replace(/[^0-9]/g, "");
-  //   setCpf(onlyNumbers(maskedCpf));
-
-  //   if (maskedCpf.length === 14) {
-  //     if (isValidCPF(maskedCpf)) {
-  //       setErrorCpf(false);
-  //       setCpf(onlyNumbers(maskedCpf));
-  //     }
-  //   }
-  //   else setErrorCpf(true);
-  // }
-
-  // const [alertToggleOpen, setAlertToggleOpen] = useState(false);
-  // const [alertErrorCpf, setAlertErrorCpf] = useState(false);
-  // const [errorCpfMessage, setErrorCpfMessage] = useState("");
-
-  // const alertHandleErrorCpf = () => {
-  //   setAlertErrorCpf(prev => !prev);
-  //   setTimeout(() => {
-  //     setAlertErrorCpf(false);
-  //   }, 4000);
-  // };
-
-  // const alertHandleToggle = () => {
-  //   setAlertToggleOpen(prev => !prev);
-  //   setTimeout(() => {
-  //     setAlertToggleOpen(false);
-  //   }, 4000);
-  // };
-
   return (
     <>
+      {alert && (
+        <CustomAlert
+          alertType={alert.type}
+          alertMessage={alert.message}
+        />
+      )}
       <Title>
         Cadastrar Cliente
       </Title>
@@ -186,7 +134,7 @@ function RegisterCustomer() {
             >Salvar
             </Button>
             <Button
-              onClick={() => reset()}
+              onClick={resetForm}
               startIcon={<DeleteOutlineRoundedIcon />}
             >Limpar
             </Button>
