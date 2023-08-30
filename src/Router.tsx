@@ -7,9 +7,9 @@ function Router() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<RegisterCustomer />} />
-        <Route path="/search" element={<SearchCustomer />} />
-        <Route path="*" element={<RegisterCustomer />} />
+        <Route path="/" element={<SearchCustomer />} />
+        <Route path="*" element={<SearchCustomer />} />
+        <Route path="/register" element={<RegisterCustomer />} />
       </Routes>
     </BrowserRouter>
   );
