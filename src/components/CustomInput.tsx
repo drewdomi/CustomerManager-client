@@ -1,6 +1,6 @@
 import { TextField } from "@mui/material";
 import { Control, Controller } from "react-hook-form";
-import { InputValues } from "./CustomerForm";
+import { InputValues } from "../views/RegisterCustomer";
 import InputMask from "react-input-mask";
 
 type InputType = "text" | "date" | "id" | "cpf" | "email";

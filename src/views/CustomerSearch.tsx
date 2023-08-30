@@ -1,15 +1,15 @@
 import { Paper, FormControl, Box, Button, Typography } from "@mui/material";
-import Title from "./Title";
-import FormInput from "./FormInput";
+import Title from "../components/Title";
+// import FormInput from "./FormInput";
 import { useState } from "react";
 import api from "../services/api";
-import CustomAlert from './CustomAlert';
+import CustomAlert from '../components/CustomAlert';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import PersonRemoveRoundedIcon from '@mui/icons-material/PersonRemoveRounded';
-import isValidCPF from "../snippets/isValidCpf";
-import CustomerEditor from "./CustomerEditor";
+// import isValidCPF from "../snippets/isValidCpf";
+import CustomerEditor from "../components/CustomerEditor";
 import maskCpf from "../snippets/maskCpf";
 import maskDate from "../snippets/maskDate";
 
@@ -152,21 +152,21 @@ function CustomerSearch() {
     }, 3000);
   };
 
-  function handleCpf(maskedCpf: string) {
-    const onlyNumbers = (str: string) => str.replace(/[^0-9]/g, "");
-    setCpf(onlyNumbers(maskedCpf));
+  // function handleCpf(maskedCpf: string) {
+  //   const onlyNumbers = (str: string) => str.replace(/[^0-9]/g, "");
+  //   setCpf(onlyNumbers(maskedCpf));
 
-    if (maskedCpf.length === 14) {
-      setAlertErrorCpf(false);
-      if (isValidCPF(maskedCpf)) {
-        setErrorCpf(false);
-        setCpf(onlyNumbers(maskedCpf));
-      }
-    }
-    else {
-      setErrorCpf(true);
-    }
-  }
+  //   if (maskedCpf.length === 14) {
+  //     setAlertErrorCpf(false);
+  //     if (isValidCPF(maskedCpf)) {
+  //       setErrorCpf(false);
+  //       setCpf(onlyNumbers(maskedCpf));
+  //     }
+  //   }
+  //   else {
+  //     setErrorCpf(true);
+  //   }
+  // }
   const [alertErrorCpf, setAlertErrorCpf] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [editorOpen, setEditorOpen] = useState(false);
@@ -257,7 +257,7 @@ function CustomerSearch() {
               gap: "10px",
             }}
           >
-            <FormInput
+            {/* <FormInput
               label="ID"
               type="id"
               onChange={e => setId(e.target.value)}
@@ -276,9 +276,9 @@ function CustomerSearch() {
               onChange={e => handleCpf(e.target.value)}
               error={errorCpf}
               required={false}
-            />
+            /> */}
           </Box>
-          <FormInput
+          {/* <FormInput
             label="Nome"
             onChange={e => setName(e.target.value)}
             value={name}
@@ -286,7 +286,7 @@ function CustomerSearch() {
             sx={{
               flexGrow: 3,
             }}
-          />
+          /> */}
           <Box
             sx={{
               display: "flex",

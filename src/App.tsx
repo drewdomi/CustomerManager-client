@@ -1,11 +1,23 @@
+import { Box } from "@mui/material";
 import Router from "./Router";
-import Layout from "./components/Layout";
+import SideBar from "./components/SideBar";
 
 function App() {
   return (
-    <Layout>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        maxWidth: "600px",
+        margin: "auto",
+        gap: "15px",
+        padding: "20px 15px 0"
+      }}
+    >
+      <SideBar />
       <Router />
-    </Layout>
+    </Box>
+
   );
 }
 

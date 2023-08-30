@@ -4,10 +4,10 @@ import { Paper, Button, FormControl, Box } from "@mui/material";
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 // import api from '../services/api';
-import Title from './Title';
+import Title from '../components/Title';
 
 import { useForm, SubmitHandler } from "react-hook-form";
-import CustomInput from './CustomInput';
+import CustomInput from '../components/CustomInput';
 
 export type InputValues = {
   name: string;
@@ -16,7 +16,7 @@ export type InputValues = {
   birthday: string;
 };
 
-function CustomerForm() {
+function RegisterCustomer() {
 
   const { handleSubmit, control, reset } = useForm<InputValues>();
 
@@ -173,4 +173,4 @@ function CustomerForm() {
   );
 }
 
-export default CustomerForm;
+export default RegisterCustomer;
