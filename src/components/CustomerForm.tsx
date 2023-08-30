@@ -161,6 +161,18 @@ function CustomerForm() {
               gap: "10px",
             }}
           >
+            <CustomInput
+              control={control}
+              name="cpf"
+              label="CPF"
+              inputType="cpf"
+            />
+            <CustomInput
+              control={control}
+              name="birthday"
+              label="Data de nascimento"
+              inputType="date"
+            /> 
             {/* <FormInput
               label="CPF"
               type="cpf"
