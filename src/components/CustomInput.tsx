@@ -1,6 +1,7 @@
 import { TextField } from "@mui/material";
 import { Control, Controller } from "react-hook-form";
 import { InputValues } from "./CustomerForm";
+import InputMask from "react-input-mask";
 
 type InputType = "text" | "date" | "id" | "cpf";
 
@@ -58,15 +59,21 @@ function CustomInput({ label, name, control, inputType = "text" }: Props) {
     cpf: (
       <Controller
         render={({ field }) => (
-          <TextField
+          <InputMask
+            mask="999.999.999-99"
+            maskPlaceholder=""
             {...field}
-            type={inputType}
-            label={label}
-            size="small"
-            sx={{
-              flexGrow: 1
-            }}
-          />
+          >
+            <TextField
+              {...field}
+              type={inputType}
+              label={label}
+              size="small"
+              sx={{
+                flexGrow: 1
+              }}
+            />
+          </InputMask>
         )}
         name={name}
         control={control}
@@ -76,16 +83,22 @@ function CustomInput({ label, name, control, inputType = "text" }: Props) {
     id: (
       <Controller
         render={({ field }) => (
-          <TextField
+          <InputMask
+            mask="999999"
+            maskPlaceholder=""
             {...field}
-            type={inputType}
-            label={label}
-            size="small"
-            sx={{
-              flexGrow: 1,
-              width: "50%",
-            }}
-          />
+          >
+            <TextField
+              {...field}
+              type={inputType}
+              label={label}
+              size="small"
+              sx={{
+                flexGrow: 1,
+                width: "50%",
+              }}
+            />
+          </InputMask>
         )}
         name={name}
         control={control}

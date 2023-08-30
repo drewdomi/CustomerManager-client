@@ -18,11 +18,11 @@ export type InputValues = {
 };
 
 function CustomerForm() {
-  const [name, setName] = useState("");
-  const [cpf, setCpf] = useState("");
-  const [errorCpf, setErrorCpf] = useState(false);
-  const [birthday, setBirthday] = useState("");
-  const [email, setEmail] = useState("");
+  // const [name, setName] = useState("");
+  // const [cpf, setCpf] = useState("");
+  // const [errorCpf, setErrorCpf] = useState(false);
+  // const [birthday, setBirthday] = useState("");
+  // const [email, setEmail] = useState("");
 
   const { handleSubmit, control } = useForm<InputValues>();
   const onSubmit: SubmitHandler<InputValues> = (data, event) => {
