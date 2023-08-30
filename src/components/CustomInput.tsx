@@ -3,7 +3,7 @@ import { Control, Controller } from "react-hook-form";
 import { InputValues } from "./CustomerForm";
 import InputMask from "react-input-mask";
 
-type InputType = "text" | "date" | "id" | "cpf";
+type InputType = "text" | "date" | "id" | "cpf" | "email";
 
 type Props = {
   inputType?: InputType;
@@ -29,6 +29,26 @@ function CustomInput({ label, name, control, inputType = "text" }: Props) {
             sx={{
               flexGrow: 1,
             }}
+            inputProps={{ maxLength: 60 }}
+          />
+        )}
+        name={name}
+        control={control}
+        defaultValue=""
+      />
+    ),
+    email: (
+      <Controller
+        render={({ field }) => (
+          <TextField
+            {...field}
+            type="email"
+            label={label}
+            size="small"
+            sx={{
+              flexGrow: 1,
+            }}
+            inputProps={{ maxLength: 60 }}
           />
         )}
         name={name}
@@ -65,7 +85,6 @@ function CustomInput({ label, name, control, inputType = "text" }: Props) {
             {...field}
           >
             <TextField
-              {...field}
               type={inputType}
               label={label}
               size="small"
@@ -89,7 +108,6 @@ function CustomInput({ label, name, control, inputType = "text" }: Props) {
             {...field}
           >
             <TextField
-              {...field}
               type={inputType}
               label={label}
               size="small"

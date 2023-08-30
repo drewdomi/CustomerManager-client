@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
 import { Paper, Button, FormControl, Box } from "@mui/material";
-import isValidCPF from '../snippets/isValidCpf';
-import CustomAlert from './CustomAlert';
+// import isValidCPF from '../snippets/isValidCpf';
+// import CustomAlert from './CustomAlert';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
-import api from '../services/api';
+// import api from '../services/api';
 import Title from './Title';
 
-import { useForm, SubmitHandler,} from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import CustomInput from './CustomInput';
 
 export type InputValues = {
@@ -18,13 +17,9 @@ export type InputValues = {
 };
 
 function CustomerForm() {
-  // const [name, setName] = useState("");
-  // const [cpf, setCpf] = useState("");
-  // const [errorCpf, setErrorCpf] = useState(false);
-  // const [birthday, setBirthday] = useState("");
-  // const [email, setEmail] = useState("");
 
-  const { handleSubmit, control } = useForm<InputValues>();
+  const { handleSubmit, control, reset } = useForm<InputValues>();
+
   const onSubmit: SubmitHandler<InputValues> = (data, event) => {
     event?.preventDefault();
     console.log(data);
@@ -83,49 +78,26 @@ function CustomerForm() {
   //   else setErrorCpf(true);
   // }
 
-  const [alertToggleOpen, setAlertToggleOpen] = useState(false);
-  const [alertErrorCpf, setAlertErrorCpf] = useState(false);
-  const [errorCpfMessage, setErrorCpfMessage] = useState("");
+  // const [alertToggleOpen, setAlertToggleOpen] = useState(false);
+  // const [alertErrorCpf, setAlertErrorCpf] = useState(false);
+  // const [errorCpfMessage, setErrorCpfMessage] = useState("");
 
-  const alertHandleErrorCpf = () => {
-    setAlertErrorCpf(prev => !prev);
-    setTimeout(() => {
-      setAlertErrorCpf(false);
-    }, 4000);
-  };
+  // const alertHandleErrorCpf = () => {
+  //   setAlertErrorCpf(prev => !prev);
+  //   setTimeout(() => {
+  //     setAlertErrorCpf(false);
+  //   }, 4000);
+  // };
 
-  const alertHandleToggle = () => {
-    setAlertToggleOpen(prev => !prev);
-    setTimeout(() => {
-      setAlertToggleOpen(false);
-    }, 4000);
-  };
-
-  function cleanInputs() {
-    setName("");
-    setEmail("");
-    setCpf("");
-    setBirthday("");
-    setErrorCpf(false)
-  }
+  // const alertHandleToggle = () => {
+  //   setAlertToggleOpen(prev => !prev);
+  //   setTimeout(() => {
+  //     setAlertToggleOpen(false);
+  //   }, 4000);
+  // };
 
   return (
     <>
-      {
-        alertToggleOpen &&
-        <CustomAlert
-          alertMessage="Cliente cadastrado com sucesso!!"
-          type="success"
-        />
-      }
-      {
-        alertErrorCpf &&
-        <CustomAlert
-          alertMessage={errorCpfMessage}
-          type="error"
-        />
-
-      }
       <Title>
         Cadastrar Cliente
       </Title>
@@ -153,6 +125,7 @@ function CustomerForm() {
             control={control}
             name="email"
             label="E-Mail"
+            inputType="email"
           />
           <Box
             sx={{
@@ -172,23 +145,7 @@ function CustomerForm() {
               name="birthday"
               label="Data de nascimento"
               inputType="date"
-            /> 
-            {/* <FormInput
-              label="CPF"
-              type="cpf"
-              onChange={e => handleCpf(e.target.value)}
-              error={errorCpf}
-              value={cpf}
             />
-            <FormInput
-              label="Data de Nascimento"
-              type="date"
-              onChange={e => setBirthday(e.target.value)}
-              value={birthday}
-              sx={{
-                width: "50%",
-              }}
-            /> */}
           </Box>
           <Box
             sx={{
@@ -205,7 +162,7 @@ function CustomerForm() {
             >Salvar
             </Button>
             <Button
-              onClick={cleanInputs}
+              onClick={() => reset()}
               startIcon={<DeleteOutlineRoundedIcon />}
             >Limpar
             </Button>
