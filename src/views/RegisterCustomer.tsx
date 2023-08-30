@@ -8,6 +8,8 @@ import Title from '../components/Title';
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import CustomInput from '../components/CustomInput';
+import api from "../services/api";
+import { unMaskCpf } from "../snippets/handleData";
 
 export type InputValues = {
   name: string;
@@ -20,9 +22,31 @@ function RegisterCustomer() {
 
   const { handleSubmit, control, reset } = useForm<InputValues>();
 
-  const onSubmit: SubmitHandler<InputValues> = (data, event) => {
+  const onSubmit: SubmitHandler<InputValues> = async (data, event) => {
     event?.preventDefault();
-    console.log(data);
+    // console.log(data);
+
+    const isValidDoc = await api.get(`verify-cpf/${data.cpf}`).then(res => res.data);
+
+    if (!isValidDoc) {
+      console.log("CPF inválido");
+      return;
+    }
+
+    const isCpfRegisted = await api.get(`customers/find?cpf=${unMaskCpf(data.cpf)}`)
+      .then(res => res.data)
+      .catch(error => {
+        console.log(error, "Error no Servidor");
+      });
+
+    if (isCpfRegisted.length !== 0) console.log("Cliente já cadastrado");
+      else {
+      await api.post("customers", data)
+        .then(() => reset())
+        .catch(error => {
+          console.log(error, "Error no Servidor");
+        });      
+    }
   };
 
   // async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {

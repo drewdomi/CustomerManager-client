@@ -10,19 +10,21 @@ type Props = {
   label: string;
   name: keyof InputValues;
   control: Control<InputValues>;
+  required?: boolean;
 };
 
 type TypeInput = {
   [key in InputType]: JSX.Element;
 };
 
-function CustomInput({ label, name, control, inputType = "text" }: Props) {
+function CustomInput({ label, name, control, inputType = "text", required = true }: Props) {
   const typeInputs: TypeInput = {
     text: (
       <Controller
         render={({ field }) => (
           <TextField
             {...field}
+            required={required}
             type={inputType}
             label={label}
             size="small"
@@ -42,6 +44,7 @@ function CustomInput({ label, name, control, inputType = "text" }: Props) {
         render={({ field }) => (
           <TextField
             {...field}
+            required={required}
             type="email"
             label={label}
             size="small"
@@ -61,6 +64,7 @@ function CustomInput({ label, name, control, inputType = "text" }: Props) {
         render={({ field }) => (
           <TextField
             {...field}
+            required={required}
             type="date"
             label={label}
             size="small"
@@ -85,6 +89,7 @@ function CustomInput({ label, name, control, inputType = "text" }: Props) {
             {...field}
           >
             <TextField
+              required={required}
               type={inputType}
               label={label}
               size="small"
@@ -108,6 +113,7 @@ function CustomInput({ label, name, control, inputType = "text" }: Props) {
             {...field}
           >
             <TextField
+              required={required}
               type={inputType}
               label={label}
               size="small"
