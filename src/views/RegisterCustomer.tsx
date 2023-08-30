@@ -10,6 +10,7 @@ import CustomAlert, { AlertType } from "../components/CustomAlert";
 import { useState } from "react";
 
 export type InputValues = {
+  id: number;
   name: string;
   cpf: string;
   email: string;

@@ -114,12 +114,12 @@ function CustomInput({ label, name, control, inputType = "text", required = true
           >
             <TextField
               required={required}
-              type={inputType}
+              type="text"
               label={label}
               size="small"
               sx={{
                 flexGrow: 1,
-                width: "50%",
+                width: "80px",
               }}
             />
           </InputMask>
