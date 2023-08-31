@@ -4,34 +4,34 @@ import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 // import EditRoundedIcon from '@mui/icons-material/EditRounded';
 // import PersonRemoveRoundedIcon from '@mui/icons-material/PersonRemoveRounded';
 // import CustomAlert, { AlertType } from "../components/CustomAlert";
-// import api from "../services/api";
+import api from "../services/api";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Title from '../components/Title';
 import CustomInput from "../components/CustomInput";
-// import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { InputValues } from "./RegisterCustomer";
+import { ICustomer } from "../services/models/ICustomer";
 
 
 function SearchCustomer() {
 
   const { handleSubmit, reset, control } = useForm<InputValues>();
 
-  // const customersQuery = useQuery({
-  //   queryKey: ["customers"],
-  //   queryFn: () => {
-  //     if (!localStorage.getItem("customers")) {
-  //       api.get("customers").then(res => {
-  //         localStorage.setItem("customers", JSON.stringify(res.data.results));
-  //         return res.data.results;
-  //       });
-  //     } else {
-  //       return JSON.parse(localStorage.getItem("customers") || "");
-  //     }
-  //   }
-  // });
+  const customersQuery = useQuery({
+    queryKey: ["customers"],
+    queryFn: () => {
+      if (!localStorage.getItem("customers")) {
+        return api.get<ICustomer[]>("customers").then(res => {
+          return res.data;
+        });
+      }
+      else return JSON.parse(localStorage.getItem("customers") || "{}");
+    }
+  });
 
-  // if (customersQuery.isLoading) return <Loader />;
-  // if (customersQuery.isError) return <h1>Error</h1>;
+
+  if (customersQuery.isLoading) return <h1>Carregando</h1>;
+  if (customersQuery.isError) return <h1>Error</h1>;
 
 
   const resetForm = () => {
@@ -41,7 +41,7 @@ function SearchCustomer() {
 
   const onSubmit: SubmitHandler<InputValues> = async (data, event) => {
     event?.preventDefault();
-    console.log(data)
+    console.log(data);
   };
 
   return (
@@ -87,11 +87,11 @@ function SearchCustomer() {
             />
           </Box>
           <CustomInput
-              control={control}
-              label="Nome"
-              required={false}
-              name="name"
-            />
+            control={control}
+            label="Nome"
+            required={false}
+            name="name"
+          />
           <Box
             sx={{
               display: "flex",
