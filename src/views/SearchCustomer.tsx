@@ -11,11 +11,13 @@ import CustomInput from "../components/CustomInput";
 import { useQuery } from "@tanstack/react-query";
 import { InputValues } from "./RegisterCustomer";
 import { ICustomer } from "../services/models/ICustomer";
-
+import { useState } from "react";
+import CustomAlert, { AlertType } from "../components/CustomAlert";
 
 function SearchCustomer() {
 
   const { handleSubmit, reset, control } = useForm<InputValues>();
+  const [alert, setAlert] = useState<{ type: AlertType; message: string; } | null>(null);
 
   const customersQuery = useQuery({
     queryKey: ["customers"],
@@ -29,13 +31,15 @@ function SearchCustomer() {
     }
   });
 
-
-  if (customersQuery.isLoading) return <h1>Carregando</h1>;
-  if (customersQuery.isError) return <h1>Error</h1>;
-
+  const showCustomAlert = (type: AlertType, message: string) => {
+    setAlert({ type, message });
+    setTimeout(() => {
+      setAlert(null);
+    }, 5000);
+  };
 
   const resetForm = () => {
-    // showCustomAlert('success', 'Formulário limpo.');
+    showCustomAlert('success', 'Formulário limpo.');
     reset();
   };
 
@@ -44,8 +48,17 @@ function SearchCustomer() {
     console.log(data);
   };
 
+  if (customersQuery.isLoading) return <h1>Carregando</h1>;
+  if (customersQuery.isError) return <h1>Error</h1>;
+
   return (
     <>
+      {alert && (
+        <CustomAlert
+          alertType={alert.type}
+          alertMessage={alert.message}
+        />
+      )}
       <Title>
         Pesquisar Cliente
       </Title>
