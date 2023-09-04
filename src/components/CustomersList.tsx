@@ -5,7 +5,7 @@ import { maskCpf, maskDate } from "../snippets/handleData";
 import { ICustomer } from "../services/models/ICustomer";
 
 interface Props {
-  customers: ICustomer[]
+  customers: ICustomer[];
 }
 
 function CustomersList({ customers }: Props) {
@@ -39,7 +39,6 @@ function CustomersList({ customers }: Props) {
             >
               <Button
                 variant="contained"
-                color="success"
                 startIcon={<EditRoundedIcon />}
               // onClick={() => handleEditCustomer(customer)}
               >

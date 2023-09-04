@@ -17,14 +17,16 @@ function SearchCustomer() {
   const { handleSubmit, reset, control } = useForm<InputValues>();
   const [alert, setAlert] = useState<{ type: AlertType; message: string; } | null>(null);
 
+  // `customers/find?name=${data.name ? data.name : ""}&cpf=${data.cpf ? data.cpf : ""}`
   const customersQuery = useQuery({
     queryKey: ["customers"],
     queryFn: () => {
       if (!localStorage.getItem("customers")) {
-        api.get<ICustomer[]>(
-          // `customers/find?name=${data.name ? data.name : ""}&cpf=${data.cpf ? data.cpf : ""}`
-          "customers"
-        ).then(res => res.data)
+        return api.get<ICustomer[]>("customers").then(res => {
+          localStorage.setItem("customers", JSON.stringify(res.data));
+          return res.data
+        })
+
       }
       else return JSON.parse(localStorage.getItem("customers") || "{}");
     }
