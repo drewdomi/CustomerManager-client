@@ -5,7 +5,7 @@ import api from "../services/api";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Title from '../components/Title';
 import CustomInput from "../components/CustomInput";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { InputValues } from "./RegisterCustomer";
 import { ICustomer } from "../services/models/ICustomer";
 import CustomAlert, { AlertType } from "../components/CustomAlert";
@@ -17,14 +17,14 @@ function SearchCustomer() {
   const { handleSubmit, reset, control } = useForm<InputValues>();
   const [alert, setAlert] = useState<{ type: AlertType; message: string; } | null>(null);
 
-  // `customers/find?name=${data.name ? data.name : ""}&cpf=${data.cpf ? data.cpf : ""}`
-  const customersQuery = useQuery({
-    queryKey: ["customers"],
-    queryFn: () => {
-      return api.get<ICustomer[]>("customers").then(res => {
-        return res.data;
+  const customersMutation = useMutation({
+    mutationKey: ["customers"],
+    mutationFn: ({ id, name, cpf }: InputValues) => {
+      const apiUrl = id ? `customers/${id}` : `customers/find?name=${name}&cpf=${cpf}`;
+      return api.get<ICustomer[]>(apiUrl).then((res) => {
+        return id ? res.data : res.data;
       });
-    }
+    },
   });
 
   const showCustomAlert = (type: AlertType, message: string) => {
@@ -35,13 +35,13 @@ function SearchCustomer() {
   };
 
   const resetForm = () => {
-    showCustomAlert('success', 'Formulário limpo.');
+    showCustomAlert('success', 'Parâmetros limpos.');
     reset();
   };
 
   const onSubmit: SubmitHandler<InputValues> = async (data, event) => {
     event?.preventDefault();
-    console.log(data);
+    customersMutation.mutate(data);
   };
 
   return (
@@ -123,13 +123,15 @@ function SearchCustomer() {
           </Box>
         </FormControl>
       </Paper>
-      {customersQuery.isLoading ?
+      {customersMutation.isLoading ?
         (<Typography variant="h6" align="center">Carregando...</Typography>)
-        : customersQuery.isError ?
-          (<Typography variant="h6" align="center">Error</Typography>)
-          : null
+        : customersMutation.data?.length === 0 ?
+          (<Typography variant="h6" align="center">Nenhum cliente encontrado.</Typography>)
+          : customersMutation.isError ?
+            (<Typography variant="h6" align="center">Erro ao pesquisar.</Typography>)
+            : null
       }
-      <CustomersList customers={customersQuery.data} />
+      <CustomersList customers={customersMutation.data} />
     </>
   );
 }
