@@ -1,9 +1,6 @@
 import { Paper, Button, FormControl, Box } from "@mui/material";
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
-// import EditRoundedIcon from '@mui/icons-material/EditRounded';
-// import PersonRemoveRoundedIcon from '@mui/icons-material/PersonRemoveRounded';
-// import CustomAlert, { AlertType } from "../components/CustomAlert";
 import api from "../services/api";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Title from '../components/Title';
@@ -11,8 +8,9 @@ import CustomInput from "../components/CustomInput";
 import { useQuery } from "@tanstack/react-query";
 import { InputValues } from "./RegisterCustomer";
 import { ICustomer } from "../services/models/ICustomer";
-import { useState } from "react";
 import CustomAlert, { AlertType } from "../components/CustomAlert";
+import { useState } from "react";
+import CustomersList from "../components/CustomersList";
 
 function SearchCustomer() {
 
@@ -23,9 +21,10 @@ function SearchCustomer() {
     queryKey: ["customers"],
     queryFn: () => {
       if (!localStorage.getItem("customers")) {
-        return api.get<ICustomer[]>("customers").then(res => {
-          return res.data;
-        });
+        api.get<ICustomer[]>(
+          // `customers/find?name=${data.name ? data.name : ""}&cpf=${data.cpf ? data.cpf : ""}`
+          "customers"
+        ).then(res => res.data)
       }
       else return JSON.parse(localStorage.getItem("customers") || "{}");
     }
@@ -128,9 +127,9 @@ function SearchCustomer() {
               Limpar
             </Button>
           </Box>
-
         </FormControl>
       </Paper>
+      <CustomersList customers={customersQuery.data}/>
     </>
   );
 }
