@@ -21,14 +21,9 @@ function SearchCustomer() {
   const customersQuery = useQuery({
     queryKey: ["customers"],
     queryFn: () => {
-      if (!localStorage.getItem("customers")) {
-        return api.get<ICustomer[]>("customers").then(res => {
-          localStorage.setItem("customers", JSON.stringify(res.data));
-          return res.data
-        })
-
-      }
-      else return JSON.parse(localStorage.getItem("customers") || "{}");
+      return api.get<ICustomer[]>("customers").then(res => {
+        return res.data;
+      });
     }
   });
 
@@ -48,9 +43,6 @@ function SearchCustomer() {
     event?.preventDefault();
     console.log(data);
   };
-
-  if (customersQuery.isLoading) return <h1>Carregando</h1>;
-  if (customersQuery.isError) return <h1>Error</h1>;
 
   return (
     <>
@@ -131,7 +123,15 @@ function SearchCustomer() {
           </Box>
         </FormControl>
       </Paper>
-      <CustomersList customers={customersQuery.data}/>
+
+      {customersQuery.isLoading ? (
+        <h1>Carregando</h1>
+      ) : customersQuery.isError ? (
+        <h1>Error</h1>
+      ) : (
+        <></>
+      )}
+      <CustomersList customers={customersQuery.data} />
     </>
   );
 }
