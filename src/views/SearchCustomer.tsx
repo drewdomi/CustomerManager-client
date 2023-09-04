@@ -1,4 +1,4 @@
-import { Paper, Button, FormControl, Box } from "@mui/material";
+import { Paper, Button, FormControl, Box, Typography } from "@mui/material";
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import api from "../services/api";
@@ -123,14 +123,12 @@ function SearchCustomer() {
           </Box>
         </FormControl>
       </Paper>
-
-      {customersQuery.isLoading ? (
-        <h1>Carregando</h1>
-      ) : customersQuery.isError ? (
-        <h1>Error</h1>
-      ) : (
-        <></>
-      )}
+      {customersQuery.isLoading ?
+        (<Typography variant="h6" align="center">Carregando...</Typography>)
+        : customersQuery.isError ?
+          (<Typography variant="h6" align="center">Error</Typography>)
+          : null
+      }
       <CustomersList customers={customersQuery.data} />
     </>
   );

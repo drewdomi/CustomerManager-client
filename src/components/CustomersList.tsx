@@ -11,9 +11,9 @@ interface Props {
 function CustomersList({ customers }: Props) {
   return (
     <Paper elevation={2}>
-      {customers?.map((customer, key) => customer.isDeleted === "*" ? <></> : (
+      {customers?.map((customer) => customer.isDeleted === "*" ? null : (
         <Box
-          key={key}
+          key={customer.id}
           sx={{
             padding: "20px",
             borderBottom: "solid 1px #b4b4b4",
