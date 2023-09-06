@@ -1,4 +1,4 @@
-import { Paper, Button, FormControl, Box, Typography } from "@mui/material";
+import { Paper, Button, FormControl, Box, Typography, Checkbox, FormControlLabel } from "@mui/material";
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import api from "../services/api";
@@ -99,25 +99,37 @@ function SearchCustomer() {
           <Box
             sx={{
               display: "flex",
-              justifyContent: "end",
               gap: "10px",
+              justifyContent: {xs: 'end', sm: "space-between"},
+              alignItems: "center",
               marginTop: "10px",
+              flexWrap: {xs: "wrap", sm: "no-wrap"},
             }}
           >
-            <Button
-              variant="contained"
-              type="submit"
-              color="success"
-              startIcon={<SearchRoundedIcon />}
-            >
-              Pesquisar
-            </Button>
-            <Button
-              onClick={resetForm}
-              startIcon={<DeleteOutlineRoundedIcon />}
-            >
-              Limpar
-            </Button>
+            <FormControlLabel
+              control={<Checkbox defaultChecked />}
+              label="Mostrar Inativos"
+            />
+            <Box sx={{
+              display: "flex",
+              gap: "20px",
+              justifyContent: "space-between",
+            }}>
+              <Button
+                onClick={resetForm}
+                startIcon={<DeleteOutlineRoundedIcon />}
+              >
+                Limpar
+              </Button>
+              <Button
+                variant="contained"
+                type="submit"
+                color="success"
+                startIcon={<SearchRoundedIcon />}
+              >
+                Pesquisar
+              </Button>
+            </Box>
           </Box>
         </FormControl>
       </Paper>

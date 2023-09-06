@@ -4,5 +4,5 @@ export interface ICustomer {
   email: string;
   cpf: string;
   birthday: string;
-  isActive: boolean | null;
+  isActive: boolean;
 }
