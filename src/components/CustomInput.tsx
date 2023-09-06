@@ -11,19 +11,31 @@ type Props = {
   name: keyof InputValues;
   control: Control<InputValues>;
   required?: boolean;
+  disabled?: boolean;
+  value?: string;
 };
 
 type TypeInput = {
   [key in InputType]: JSX.Element;
 };
 
-function CustomInput({ label, name, control, inputType = "text", required = true }: Props) {
+function CustomInput({
+  label,
+  name,
+  control,
+  inputType = "text",
+  required = true,
+  disabled = false,
+  value
+}: Props) {
   const typeInputs: TypeInput = {
     text: (
       <Controller
-        render={({ field }) => (
+        render={({ field, field: {onChange, value} }) => (
           <TextField
             {...field}
+            value={value || ""}
+            onChange={e => onChange(e.target.value)}
             required={required}
             type={inputType}
             label={label}
@@ -36,14 +48,16 @@ function CustomInput({ label, name, control, inputType = "text", required = true
         )}
         name={name}
         control={control}
-        defaultValue=""
+        defaultValue={value}
       />
     ),
     email: (
       <Controller
-        render={({ field }) => (
+        render={({ field, field: {onChange, value} }) => (
           <TextField
             {...field}
+            value={value || ""}
+            onChange={e => onChange(e.target.value)}
             required={required}
             type="email"
             label={label}
@@ -56,14 +70,16 @@ function CustomInput({ label, name, control, inputType = "text", required = true
         )}
         name={name}
         control={control}
-        defaultValue=""
+        defaultValue={value}
       />
     ),
     date: (
       <Controller
-        render={({ field }) => (
+        render={({ field, field: {onChange, value} }) => (
           <TextField
             {...field}
+            value={value || ""}
+            onChange={e => onChange(e.target.value)}
             required={required}
             type="date"
             label={label}
@@ -77,16 +93,19 @@ function CustomInput({ label, name, control, inputType = "text", required = true
         )}
         name={name}
         control={control}
-        defaultValue=""
+        defaultValue={value}
       />
     ),
     cpf: (
       <Controller
-        render={({ field }) => (
+        render={({ field, field: {onChange, value} }) => (
           <InputMask
             mask="999.999.999-99"
             maskPlaceholder=""
             {...field}
+            value={value || ""}
+            onChange={e => onChange(e.target.value)}
+            disabled={disabled}
           >
             <TextField
               required={required}
@@ -101,7 +120,7 @@ function CustomInput({ label, name, control, inputType = "text", required = true
         )}
         name={name}
         control={control}
-        defaultValue=""
+        defaultValue={value}
       />
     ),
     id: (

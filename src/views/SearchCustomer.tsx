@@ -19,7 +19,7 @@ function SearchCustomer() {
 
   const customersMutation = useMutation({
     mutationKey: ["customers"],
-    mutationFn: ({ id, name, cpf }: InputValues) => {
+    mutationFn: ({ id, name = "", cpf = "" }: InputValues) => {
       const apiUrl = id ? `customers/${id}` : `customers/find?name=${name}&cpf=${cpf}`;
       return api.get<ICustomer[]>(apiUrl).then((res) => id ? [res.data] : res.data);
     },

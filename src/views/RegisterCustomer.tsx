@@ -36,6 +36,7 @@ function RegisterCustomer() {
 
   const onSubmit: SubmitHandler<InputValues> = async (data, event) => {
     event?.preventDefault();
+    console.log(data)
 
     const isValidDoc = await api.get(`verify-cpf/${data.cpf}`).then(res => res.data);
 

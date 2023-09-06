@@ -2,14 +2,35 @@ import { Box, Button, Paper, Typography } from "@mui/material";
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import { maskCpf, maskDate } from "../snippets/handleData";
 import { ICustomer } from "../services/models/ICustomer";
+import { useState } from "react";
+import CustomerEditor from "./CustomerEditor";
 
 interface Props {
   customers?: ICustomer[];
 }
 
 function CustomersList({ customers }: Props) {
+  const [editorOpen, setEditorOpen] = useState(false)
+  const [selectedCustomer, setSelectedCustomer] = useState<ICustomer | null>(null);
+
+  const handleModalClose = () => {
+    setEditorOpen(false)
+  }
+
+  const onEdit = (customer: ICustomer) => {
+    setSelectedCustomer(customer);
+    setEditorOpen(true)
+  }
+
   return (
     <Paper elevation={2}>
+      {editorOpen && (
+        <CustomerEditor
+          isOpen={editorOpen}
+          customer={selectedCustomer}
+          handleModalClose={handleModalClose}
+        />
+      )}
       {customers?.map(customer => (
         <Box
           key={customer.id}
@@ -42,7 +63,7 @@ function CustomersList({ customers }: Props) {
             <Button
               variant="contained"
               startIcon={<EditRoundedIcon />}
-            // onClick={() => onEdit(customer)}
+              onClick={() => onEdit(customer)}
             >
               Editar
             </Button>
