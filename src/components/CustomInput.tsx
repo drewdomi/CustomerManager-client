@@ -1,9 +1,9 @@
-import { TextField } from "@mui/material";
+import { MenuItem, Select, TextField } from "@mui/material";
 import { Control, Controller } from "react-hook-form";
 import { InputValues } from "../views/RegisterCustomer";
 import InputMask from "react-input-mask";
 
-type InputType = "text" | "date" | "id" | "cpf" | "email";
+type InputType = "text" | "date" | "id" | "cpf" | "email" | "isActive";
 
 type Props = {
   inputType?: InputType;
@@ -31,7 +31,7 @@ function CustomInput({
   const typeInputs: TypeInput = {
     text: (
       <Controller
-        render={({ field, field: {onChange, value} }) => (
+        render={({ field, field: { onChange, value } }) => (
           <TextField
             {...field}
             value={value || ""}
@@ -53,7 +53,7 @@ function CustomInput({
     ),
     email: (
       <Controller
-        render={({ field, field: {onChange, value} }) => (
+        render={({ field, field: { onChange, value } }) => (
           <TextField
             {...field}
             value={value || ""}
@@ -75,7 +75,7 @@ function CustomInput({
     ),
     date: (
       <Controller
-        render={({ field, field: {onChange, value} }) => (
+        render={({ field, field: { onChange, value } }) => (
           <TextField
             {...field}
             value={value || ""}
@@ -98,7 +98,7 @@ function CustomInput({
     ),
     cpf: (
       <Controller
-        render={({ field, field: {onChange, value} }) => (
+        render={({ field, field: { onChange, value } }) => (
           <InputMask
             mask="999.999.999-99"
             maskPlaceholder=""
@@ -146,6 +146,29 @@ function CustomInput({
         name={name}
         control={control}
         defaultValue=""
+      />
+    ),
+    isActive: (
+      <Controller
+        render={({ field, field: { onChange, value } }) => (
+          <Select
+            sx={{ width: "150px" }}
+            color="warning"
+            {...field}
+            value={value || ""}
+            onChange={e => onChange(e.target.value)}
+            defaultValue={value}
+            size="small"
+            type={inputType}
+            required={false}
+          >
+            <MenuItem value={"ativo"}>Ativo</MenuItem>
+            <MenuItem value={"inativo"}>Inativo</MenuItem>
+          </Select>
+        )}
+        name={name}
+        control={control}
+        defaultValue={value}
       />
     )
   };

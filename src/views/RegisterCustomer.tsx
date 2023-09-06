@@ -15,6 +15,7 @@ export type InputValues = {
   cpf: string;
   email: string;
   birthday: string;
+  isActive: "active" | "inactive";
 };
 
 function RegisterCustomer() {

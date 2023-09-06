@@ -108,6 +108,13 @@ function CustomerEditor({
                 value={customer?.birthday}
               />
             </Box>
+            <CustomInput
+              control={control}
+              label=""
+              inputType="isActive"
+              name="isActive"
+              value={!!customer?.isActive ? "ativo" : "inativo"}
+            />
             <Box
               sx={{
                 display: "flex",
