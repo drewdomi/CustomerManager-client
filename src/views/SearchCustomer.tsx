@@ -21,9 +21,7 @@ function SearchCustomer() {
     mutationKey: ["customers"],
     mutationFn: ({ id, name, cpf }: InputValues) => {
       const apiUrl = id ? `customers/${id}` : `customers/find?name=${name}&cpf=${cpf}`;
-      return api.get<ICustomer[]>(apiUrl).then((res) => {
-        return id ? res.data : res.data;
-      });
+      return api.get<ICustomer[]>(apiUrl).then((res) => id ? [res.data] : res.data);
     },
   });
 
@@ -131,7 +129,7 @@ function SearchCustomer() {
             (<Typography variant="h6" align="center">Erro ao pesquisar.</Typography>)
             : null
       }
-      <CustomersList customers={customersMutation.data} />
+      <CustomersList customers={customersMutation.data as ICustomer[]} />
     </>
   );
 }
