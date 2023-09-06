@@ -138,11 +138,13 @@ export default function SideBar() {
         <List>
 
           <ListItem disablePadding>
-            <ListItemLink to="/" primary="Pesquisar Cliente" icon={<PersonAddAlt1Icon />} />
+            <ListItemLink to="/" primary="Pesquisar Cliente"
+              icon={<PersonSearchIcon />} />
           </ListItem>
 
           <ListItem disablePadding >
-            <ListItemLink to="/register" primary="Cadastrar Cliente" icon={<PersonSearchIcon />} />
+            <ListItemLink to="/register" primary="Cadastrar Cliente"
+              icon={<PersonAddAlt1Icon />} />
           </ListItem>
 
         </List>
