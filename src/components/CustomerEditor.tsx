@@ -3,13 +3,11 @@ import { Box, Button, FormControl, Paper, Typography } from '@mui/material';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import CustomInput from './CustomInput';
-// import { useState } from 'react';
-// import api from '../services/api';
-// import CustomAlert from './CustomAlert';
-// import { maskCpf } from '../snippets/handleData';
+import api from '../services/api';
 import { useForm, SubmitHandler } from "react-hook-form";
 import { InputValues } from '../views/RegisterCustomer';
 import { ICustomer } from '../services/models/ICustomer';
+import { useQueryClient } from '@tanstack/react-query';
 
 type ModalProps = {
   isOpen: boolean;
@@ -22,11 +20,16 @@ function CustomerEditor({
   handleModalClose,
   customer,
 }: ModalProps) {
+
+  const client = useQueryClient()
   const { handleSubmit, control } = useForm<InputValues>();
 
   const onSubmit: SubmitHandler<InputValues> = async (data, event) => {
     event?.preventDefault();
-    console.log(data);
+    await api.put(`/customers/${customer?.id}`, data)
+    client.refetchQueries()
+    handleModalClose()
+    
   };
 
   return (

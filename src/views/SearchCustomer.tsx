@@ -5,7 +5,7 @@ import api from "../services/api";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Title from '../components/Title';
 import CustomInput from "../components/CustomInput";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { InputValues } from "./RegisterCustomer";
 import { ICustomer } from "../services/models/ICustomer";
 import CustomAlert, { AlertType } from "../components/CustomAlert";
@@ -21,9 +21,25 @@ function SearchCustomer() {
     mutationKey: ["customers"],
     mutationFn: ({ id, name = "", cpf = "" }: InputValues) => {
       const apiUrl = id ? `customers/${id}` : `customers/find?name=${name}&cpf=${cpf}`;
-      return api.get<ICustomer[]>(apiUrl).then((res) => id ? [res.data] : res.data);
+      return api.get<ICustomer[]>(apiUrl).then(res => {
+        return id ? [res.data] : res.data;
+      }).catch(err => {
+        console.log(err)
+        return []
+      });
     },
   });
+
+  const customersQuery = useQuery({
+    queryKey: ["customers"],
+    queryFn: () => {
+      return api.get<ICustomer[]>("/customers").then(res => res.data).catch(err => {
+        console.log(err)
+        return []
+      });
+    }
+  });
+
 
   const showCustomAlert = (type: AlertType, message: string) => {
     setAlert({ type, message });
@@ -40,6 +56,7 @@ function SearchCustomer() {
   const onSubmit: SubmitHandler<InputValues> = async (data, event) => {
     event?.preventDefault();
     customersMutation.mutate(data);
+    console.log(customersMutation.data);
   };
 
   return (
@@ -122,15 +139,15 @@ function SearchCustomer() {
           </Box>
         </FormControl>
       </Paper>
-      {customersMutation.isLoading ?
+      {customersQuery.isLoading ?
         (<Typography variant="h6" align="center">Carregando...</Typography>)
-        : customersMutation.data?.length === 0 ?
+        : customersMutation?.data?.length === 0 ?
           (<Typography variant="h6" align="center">Nenhum cliente encontrado.</Typography>)
           : customersMutation.isError ?
             (<Typography variant="h6" align="center">Erro ao pesquisar.</Typography>)
             : null
       }
-      <CustomersList customers={customersMutation.data as ICustomer[]} />
+      <CustomersList customers={(customersMutation.data === undefined) ? customersQuery.data : customersMutation.data as ICustomer[]} />
     </>
   );
 }
