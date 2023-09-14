@@ -1,6 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 
-const url = "https://drewdomi-cm-api.vercel.app/customers/";
+// const url = "http://localhost:3000/";
+const url = "https://drewdomi-cm-api.vercel.app/";
 
 const api: AxiosInstance = axios.create({
   baseURL: url,

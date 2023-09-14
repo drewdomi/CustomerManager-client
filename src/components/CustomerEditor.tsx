@@ -1,23 +1,18 @@
 import Modal from '@mui/material/Modal';
-import { Box, Button, FormControl, Paper } from '@mui/material';
+import { Box, Button, FormControl, Paper, Typography } from '@mui/material';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import { useState } from 'react';
-import FormInput from './FormInput';
+import CustomInput from './CustomInput';
 import api from '../services/api';
-import CustomAlert from './CustomAlert';
-import maskCpf from '../snippets/maskCpf';
+import { useForm, SubmitHandler } from "react-hook-form";
+import { InputValues } from '../views/RegisterCustomer';
+import { ICustomer } from '../services/models/ICustomer';
+import { useQueryClient } from '@tanstack/react-query';
 
 type ModalProps = {
-  isOpen: boolean,
-  handleModalClose: () => void,
-  customer: {
-    id: string,
-    name: string,
-    cpf: string,
-    email: string,
-    birthday: string,
-  },
+  isOpen: boolean;
+  handleModalClose: () => void;
+  customer: ICustomer | null;
 };
 
 function CustomerEditor({
@@ -25,39 +20,17 @@ function CustomerEditor({
   handleModalClose,
   customer,
 }: ModalProps) {
-  const [id] = useState(customer.id);
-  const [errorCpf] = useState(false);
-  const [name, setName] = useState(customer.name);
-  const [cpf] = useState(customer.cpf);
-  const [email, setEmail] = useState(customer.email);
-  const [birthday, setBirthday] = useState(customer.birthday);
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const isValidCpf = await api.get(`find?cpf=${cpf}`).then(resp => resp.data);
-    if (!errorCpf) {
-      if (isValidCpf.length === 0 || isValidCpf[0].cpf === cpf) {
-        await api.put(`/${id}`, { name, email, birthday })
-          .then(resp => console.log(resp.data))
-        setAlertToggleOpen(true);
-        setTimeout(() => {
-          handleModalClose()
-        }, 1000)
-      }
-      else {
-        setErrorMessage("Cliente já cadastrado");
-        setAlertError(true);
-      }
-    }
-    else {
-      setErrorMessage("CPF Inválido");
-      setAlertError(true);
-    }
-  }
+  const client = useQueryClient()
+  const { handleSubmit, control } = useForm<InputValues>();
 
-  const [alertToggleOpen, setAlertToggleOpen] = useState(false);
-  const [alertError, setAlertError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const onSubmit: SubmitHandler<InputValues> = async (data, event) => {
+    event?.preventDefault();
+    await api.put(`/customers/${customer?.id}`, data)
+    client.refetchQueries()
+    handleModalClose()
+    
+  };
 
   return (
     <>
@@ -81,50 +54,38 @@ function CustomerEditor({
             transform: 'translate(-50%, -50%)',
           }}
         >
+          <Typography variant="h6" sx={{marginBottom: "30px",}}>Editar Cliente</Typography>
           <Box
             sx={{
               position: "absolute",
               bottom: "20px",
               width: "calc(100% - 29px)",
 
-            }}
-          >
-            {
-              alertToggleOpen &&
-              <CustomAlert
-                alertMessage="Cliente Alterado!!"
-                type="success"
-              />
-            }
-            {
-              alertError &&
-              <CustomAlert
-                alertMessage={errorMessage}
-                type="error"
-              />
-            }
+            }}>
           </Box>
           <FormControl
             component="form"
             autoComplete="off"
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
             sx={{
               display: "flex",
               gap: "10px",
             }}
           >
-            <FormInput
+            <CustomInput
+              control={control}
               label="Nome"
-              onChange={e => setName(e.target.value)}
-              value={name}
               required={false}
+              name="name"
+              value={customer?.name}
             />
-            <FormInput
+            <CustomInput
+              control={control}
               label="E-Mail"
-              type="email"
-              onChange={e => setEmail(e.target.value)}
-              value={email}
               required={false}
+              inputType="email"
+              name="email"
+              value={customer?.email}
             />
             <Box
               sx={{
@@ -133,20 +94,30 @@ function CustomerEditor({
                 gap: "10px",
               }}
             >
-              <FormInput
+              <CustomInput
+                control={control}
                 label="CPF"
-                value={maskCpf(cpf)}
-                required={false}
-                disabled
+                inputType="cpf"
+                name="cpf"
+                value={customer?.cpf}
+                disabled={true}
               />
-              <FormInput
+              <CustomInput
+                control={control}
                 label="Data de Nascimento"
-                type="date"
-                onChange={e => setBirthday(e.target.value)}
-                value={birthday}
                 required={false}
+                inputType="date"
+                name="birthday"
+                value={customer?.birthday}
               />
             </Box>
+            <CustomInput
+              control={control}
+              label=""
+              inputType="isActive"
+              name="isActive"
+              value={!!customer?.isActive ? "ativo" : "inativo"}
+            />
             <Box
               sx={{
                 display: "flex",

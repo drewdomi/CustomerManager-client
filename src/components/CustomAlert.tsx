@@ -1,38 +1,36 @@
-import { Button } from '@mui/material';
-import Alert from '@mui/material/Alert';
-import Stack from '@mui/material/Stack';
+import { Alert, Stack, Button } from '@mui/material';
 
-type AlertProps = {
-  alertHandleConfirm?: () => void,
-  alertHandleCancel?: () => void,
-  type: "warn" | "success" | "error",
+export type AlertType = "success" | "warning" | "error";
+
+type Props = {
+  alertHandleConfirm?: () => void;
+  alertHandleCancel?: () => void;
   alertMessage?: string;
+  alertType?: AlertType;
+};
+
+type TypeAlert = {
+  [key in AlertType]: JSX.Element;
 };
 
 export default function CustomAlert({
   alertHandleConfirm,
   alertHandleCancel,
   alertMessage,
-  type,
-}: AlertProps) {
-  if (type === "success") {
-    return (
+  alertType = "success"
+}: Props) {
+  const typeAlert: TypeAlert = {
+    success: (
       <Stack sx={{ width: '100%' }} spacing={2}>
         <Alert severity="success">{alertMessage}</Alert>
       </Stack>
-    );
-  }
-
-  if (type === "error") {
-    return (
+    ),
+    error: (
       <Stack sx={{ width: '100%' }} spacing={2}>
         <Alert severity="error">{alertMessage}</Alert>
       </Stack>
-    );
-  }
-
-  if (type === "warn") {
-    return (
+    ),
+    warning: (
       <Stack sx={{
         width: '100%',
         position: "sticky",
@@ -73,6 +71,8 @@ export default function CustomAlert({
           {alertMessage}
         </Alert>
       </Stack>
-    );
-  }
+    )
+  };
+
+  return <>{typeAlert[alertType]}</>;
 }
