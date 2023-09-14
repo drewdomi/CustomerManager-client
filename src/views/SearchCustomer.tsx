@@ -7,7 +7,6 @@ import Title from '../components/Title';
 import CustomInput from "../components/CustomInput";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { InputValues } from "./RegisterCustomer";
-import { ICustomer } from "../services/models/ICustomer";
 import CustomAlert, { AlertType } from "../components/CustomAlert";
 import { useState } from "react";
 import CustomersList from "../components/CustomersList";
@@ -21,22 +20,14 @@ function SearchCustomer() {
     mutationKey: ["customers"],
     mutationFn: ({ id, name = "", cpf = "" }: InputValues) => {
       const apiUrl = id ? `customers/${id}` : `customers/find?name=${name}&cpf=${cpf}`;
-      return api.get<ICustomer[]>(apiUrl).then(res => {
-        return id ? [res.data] : res.data;
-      }).catch(err => {
-        console.log(err)
-        return []
-      });
-    },
+      return api.get(apiUrl).then(res => id ? [res.data] : res.data);
+    }
   });
 
   const customersQuery = useQuery({
     queryKey: ["customers"],
     queryFn: () => {
-      return api.get<ICustomer[]>("/customers").then(res => res.data).catch(err => {
-        console.log(err)
-        return []
-      });
+      return api.get("/customers").then(res => res.data);
     }
   });
 
@@ -51,12 +42,12 @@ function SearchCustomer() {
   const resetForm = () => {
     showCustomAlert('success', 'Parâmetros limpos.');
     reset();
+
   };
 
   const onSubmit: SubmitHandler<InputValues> = async (data, event) => {
     event?.preventDefault();
     customersMutation.mutate(data);
-    console.log(customersMutation.data);
   };
 
   return (
@@ -141,13 +132,15 @@ function SearchCustomer() {
       </Paper>
       {customersQuery.isLoading ?
         (<Typography variant="h6" align="center">Carregando...</Typography>)
-        : customersMutation?.data?.length === 0 ?
-          (<Typography variant="h6" align="center">Nenhum cliente encontrado.</Typography>)
-          : customersMutation.isError ?
-            (<Typography variant="h6" align="center">Erro ao pesquisar.</Typography>)
-            : null
+        : customersMutation.isLoading ?
+          (<Typography variant="h6" align="center">Pesquisando...</Typography>)
+          : customersMutation?.data?.length === 0 ?
+            (<Typography variant="h6" align="center">Cliente não encontrado.</Typography>)
+            : customersMutation.isError ?
+              (<Typography variant="h6" align="center">Cliente não encontrado.</Typography>)
+              : null
       }
-      <CustomersList customers={(customersMutation.data === undefined) ? customersQuery.data : customersMutation.data as ICustomer[]} />
+      <CustomersList customers={!customersMutation.data ? customersQuery.data : customersMutation.data} />
     </>
   );
 }
