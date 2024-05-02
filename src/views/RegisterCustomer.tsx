@@ -1,9 +1,9 @@
 import { Paper, Button, FormControl, Box } from "@mui/material";
-import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
-import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
-import Title from '../components/Title';
+import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
+import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
+import Title from "../components/Title";
 import { useForm, SubmitHandler } from "react-hook-form";
-import CustomInput from '../components/CustomInput';
+import CustomInput from "../components/CustomInput";
 import api from "../services/api";
 import { unMaskCpf } from "../snippets/handleData";
 import CustomAlert, { AlertType } from "../components/CustomAlert";
@@ -14,14 +14,17 @@ export type InputValues = {
   name: string;
   cpf: string;
   email: string;
+  password: string;
   birthday: string;
   isActive: "active" | "inactive";
 };
 
 function RegisterCustomer() {
-
   const { handleSubmit, control, reset } = useForm<InputValues>();
-  const [alert, setAlert] = useState<{ type: AlertType; message: string; } | null>(null);
+  const [alert, setAlert] = useState<{
+    type: AlertType;
+    message: string;
+  } | null>(null);
 
   const showCustomAlert = (type: AlertType, message: string) => {
     setAlert({ type, message });
@@ -31,35 +34,39 @@ function RegisterCustomer() {
   };
 
   const resetForm = () => {
-    showCustomAlert('success', 'Formulário limpo.');
+    showCustomAlert("success", "Formulário limpo.");
     reset();
   };
 
   const onSubmit: SubmitHandler<InputValues> = async (data, event) => {
     event?.preventDefault();
-    console.log(data)
 
-    const isValidDoc = await api.get(`verify-cpf/${data.cpf}`).then(res => res.data);
+    const isValidDoc = await api
+      .get(`verify-cpf/${data.cpf}`)
+      .then((res) => res.data);
 
     if (!isValidDoc) {
       showCustomAlert("error", "CPF inválido");
       return;
     }
 
-    const isCpfRegisted = await api.get(`customers/find?cpf=${unMaskCpf(data.cpf)}`)
-      .then(res => res.data)
-      .catch(error => {
+    const isCpfRegisted = await api
+      .get(`customers/find?cpf=${unMaskCpf(data.cpf)}`)
+      .then((res) => res.data)
+      .catch((error) => {
         console.log(error, "Error no Servidor");
       });
 
-    if (isCpfRegisted.length !== 0) showCustomAlert("error", "Cliente já cadastrado");
+    if (isCpfRegisted.length !== 0)
+      showCustomAlert("error", "Cliente já cadastrado");
     else {
-      await api.post("customers", data)
+      await api
+        .post("customers", data)
         .then(() => {
           showCustomAlert("success", "Cliente cadastrado com sucesso");
           reset();
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error, "Error no Servidor");
         });
     }
@@ -68,14 +75,9 @@ function RegisterCustomer() {
   return (
     <>
       {alert && (
-        <CustomAlert
-          alertType={alert.type}
-          alertMessage={alert.message}
-        />
+        <CustomAlert alertType={alert.type} alertMessage={alert.message} />
       )}
-      <Title>
-        Cadastrar Cliente
-      </Title>
+      <Title>Cadastrar Cliente</Title>
       <Paper
         elevation={2}
         sx={{
@@ -91,16 +93,18 @@ function RegisterCustomer() {
             gap: "10px",
           }}
         >
-          <CustomInput
-            control={control}
-            name="name"
-            label="Nome"
-          />
+          <CustomInput control={control} name="name" label="Nome" />
           <CustomInput
             control={control}
             name="email"
             label="E-Mail"
             inputType="email"
+          />
+          <CustomInput
+            control={control}
+            name="password"
+            inputType="password"
+            label="Senha"
           />
           <Box
             sx={{
@@ -134,12 +138,14 @@ function RegisterCustomer() {
               variant="contained"
               type="submit"
               startIcon={<DoneRoundedIcon />}
-            >Salvar
+            >
+              Salvar
             </Button>
             <Button
               onClick={resetForm}
               startIcon={<DeleteOutlineRoundedIcon />}
-            >Limpar
+            >
+              Limpar
             </Button>
           </Box>
         </FormControl>
