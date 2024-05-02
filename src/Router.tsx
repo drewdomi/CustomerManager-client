@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-// import CustomerSearch from "./components/CustomerSearch";
 import RegisterCustomer from "./views/RegisterCustomer";
 import SearchCustomer from "./views/SearchCustomer";
 
@@ -16,3 +15,4 @@ function Router() {
 }
 
 export default Router;
+

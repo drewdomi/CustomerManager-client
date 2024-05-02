@@ -1,9 +1,9 @@
 import { Paper, Button, FormControl, Box, Typography } from "@mui/material";
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import api from "../services/api";
 import { useForm, SubmitHandler } from "react-hook-form";
-import Title from '../components/Title';
+import Title from "../components/Title";
 import CustomInput from "../components/CustomInput";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { InputValues } from "./RegisterCustomer";
@@ -12,25 +12,31 @@ import { useState } from "react";
 import CustomersList from "../components/CustomersList";
 
 function SearchCustomer() {
-
   const { handleSubmit, reset, control } = useForm<InputValues>();
-  const [alert, setAlert] = useState<{ type: AlertType; message: string; } | null>(null);
+  const [alert, setAlert] = useState<{
+    type: AlertType;
+    message: string;
+  } | null>(null);
 
   const customersMutation = useMutation({
     mutationKey: ["customers"],
     mutationFn: ({ id, name = "", cpf = "" }: InputValues) => {
-      const apiUrl = id ? `customers/${id}` : `customers/find?name=${name}&cpf=${cpf}`;
-      return api.get(apiUrl).then(res => id ? [res.data] : res.data);
-    }
+      const apiUrl = id
+        ? `customers/${id}`
+        : `customers/find?name=${name}&cpf=${cpf}`;
+      return api.get(apiUrl).then((res) => (id ? [res.data] : res.data));
+    },
   });
 
   const customersQuery = useQuery({
     queryKey: ["customers"],
     queryFn: () => {
-      return api.get("/customers").then(res => res.data);
-    }
+      return api.get("/customers").then((res) => {
+        console.log(res.data);
+        return res.data;
+      });
+    },
   });
-
 
   const showCustomAlert = (type: AlertType, message: string) => {
     setAlert({ type, message });
@@ -40,9 +46,8 @@ function SearchCustomer() {
   };
 
   const resetForm = () => {
-    showCustomAlert('success', 'Parâmetros limpos.');
+    showCustomAlert("success", "Parâmetros limpos.");
     reset();
-
   };
 
   const onSubmit: SubmitHandler<InputValues> = async (data, event) => {
@@ -53,14 +58,9 @@ function SearchCustomer() {
   return (
     <>
       {alert && (
-        <CustomAlert
-          alertType={alert.type}
-          alertMessage={alert.message}
-        />
+        <CustomAlert alertType={alert.type} alertMessage={alert.message} />
       )}
-      <Title>
-        Pesquisar Cliente
-      </Title>
+      <Title>Pesquisar Cliente</Title>
       <Paper
         elevation={2}
         sx={{
@@ -130,19 +130,31 @@ function SearchCustomer() {
           </Box>
         </FormControl>
       </Paper>
-      {customersQuery.isLoading ?
-        (<Typography variant="h6" align="center">Carregando...</Typography>)
-        : customersMutation.isLoading ?
-          (<Typography variant="h6" align="center">Pesquisando...</Typography>)
-          : customersMutation?.data?.length === 0 ?
-            (<Typography variant="h6" align="center">Cliente não encontrado.</Typography>)
-            : customersMutation.isError ?
-              (<Typography variant="h6" align="center">Cliente não encontrado.</Typography>)
-              : null
-      }
-      <CustomersList customers={!customersMutation.data ? customersQuery.data : customersMutation.data} />
+      {customersQuery.isLoading ? (
+        <Typography variant="h6" align="center">
+          Carregando...
+        </Typography>
+      ) : customersMutation.isLoading ? (
+        <Typography variant="h6" align="center">
+          Pesquisando...
+        </Typography>
+      ) : customersMutation?.data?.length === 0 ? (
+        <Typography variant="h6" align="center">
+          Cliente não encontrado.
+        </Typography>
+      ) : customersMutation.isError ? (
+        <Typography variant="h6" align="center">
+          Cliente não encontrado.
+        </Typography>
+      ) : null}
+      <CustomersList
+        customers={
+          !customersMutation.data ? customersQuery.data : customersMutation.data
+        }
+      />
     </>
   );
 }
 
 export default SearchCustomer;
+
